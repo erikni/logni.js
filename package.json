@@ -1,0 +1,26 @@
+{
+  "name": "logni.js",
+  "version": "0.0.1",
+  "description": "logger js",
+  "main": "src/logni.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test/logni.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikni/logni.js.git"
+  },
+  "keywords": [
+    "logger",
+    "js"
+  ],
+  "author": "Erik Brozek <erik@brozek.name>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikni/logni.js/issues"
+  },
+  "homepage": "https://logni.net"
+}
