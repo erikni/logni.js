@@ -3,12 +3,13 @@
 <body>
 
 <script>
-//logni.mask( 'I3')
-//logni.stderr(1)
+logni.debugMode = 0;
+logni.mask( 'I3E1F1W2')
+logni.stderr(1)
 
 logni.debug(    'test debug' );
-logni.info(     'info test');
-logni.warn(     'test warning' );
+logni.info(     'info test', 4);
+logni.warn(     'test warning', 3 );
 logni.error(    'test error' );
 logni.critical( 'test critical' );
 </script>
