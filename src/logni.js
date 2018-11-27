@@ -229,3 +229,5 @@ var logni = new function() {
 	// initialize
 	this.__init__();
 }
+
+module.exports = logni
