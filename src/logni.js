@@ -1,3 +1,4 @@
+
 var logni = new function() {
 
 	this.debugMode 	= 0;
@@ -6,7 +7,7 @@ var logni = new function() {
 	this.__init__  = function() {
 		
 		this.__LOGniMaskLevel	= {};
-		this.__LOGniMaskNo	= {}
+		this.__LOGniMaskNo	= {};
 
 		// colors: https://getbootstrap.com/docs/4.1/components/alerts/
 		this.__LOGniColors = {
@@ -26,7 +27,7 @@ var logni = new function() {
 			WARN:	'warning',
 			ERROR:	'danger',
 			FATAL:	'danger',
-		}
+		};
 
 		this.__logMaskNameFull 	= [ 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL' ];
 		if ( this.debugMode == 1 ) {
@@ -59,7 +60,8 @@ var logni = new function() {
 		this.mask( 'ALL' );
 		this.stderr( 1 );
 
-	}
+		return 1;
+	};
 
 	// set mask
 	this.mask = function( LOGniMask='ALL' ) {
@@ -80,9 +82,9 @@ var logni = new function() {
 			// len is wrong
 			var l = this.LOGniMask.length;
 			if ( l < 2 ) {
-				return 0
+				return 0;
 			} else if ( l > 10 ) {
-				return 0
+				return 0;
 			}
 
 			// set default LEVEL=0
@@ -104,7 +106,7 @@ var logni = new function() {
 					if ( this.debugMode == 1 ) {
 						console.log( 'DEBUG: this.__LOGniMaskLevel['+_l+'] is undefined' );
 					}
-					return 0
+					return 0;
 				} else {
 					this.__LOGniMaskLevel[_l] = _no;
 				}
@@ -116,7 +118,7 @@ var logni = new function() {
 		}
 		
 
-	}
+	};
 
 	// set stderr
 	this.stderr = function( LOGniStderr=0 ) {
@@ -124,7 +126,7 @@ var logni = new function() {
 			console.log( 'DEBUG: init: logni.stderr('+ LOGniStderr +')');
 		}
 		this.LOGniStderr = LOGniStderr;
-	}
+	};
 
 	// log use?
 	this.__logUse = function( LOGniMsgLevel0, LOGniMsgNo=1 ) {
@@ -156,16 +158,16 @@ var logni = new function() {
 		}
 		return 1;
 
-	}
+	};
 
 	// log message
-	this.__msg = function( LOGniMsgMessage='', LOGniMsgLevel, LOGniMsgNo=1 ) {
+	this.__msg = function( LOGniMsgMessage='', LOGniMsgLevel='DEBUG', LOGniMsgNo=1 ) {
 
 		// priority
 		if (LOGniMsgNo < 1) {
- 			LOGniMsgNo = 1
+ 			LOGniMsgNo = 1;
 		} else if (LOGniMsgNo > 4 ) {
-			LOGniMsgNo = 4 
+			LOGniMsgNo = 4;
 		}
 
 		var __logniTime = new Date().toISOString();
@@ -173,7 +175,7 @@ var logni = new function() {
 		var __logniPrefix = __l0 + LOGniMsgNo;
 
 		if (this.__logUse(__l0, LOGniMsgNo) == 0) { 
-			return 0
+			return 0;
 		}
 
 		if ( this.LOGniStderr == 1 ) {
@@ -185,30 +187,30 @@ var logni = new function() {
 		//	console.log( t[i] );
 		//}
 
-		return 1
+		return 1;
 
-	}
+	};
 
 	// log method
 	this.debug = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
 		this.__msg( LOGniMsgMessage, 'DEBUG', LOGniMsgNo );
-	}
+	};
 
 	this.critical = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
 		this.__msg( LOGniMsgMessage, 'FATAL', LOGniMsgNo );
-	}
+	};
 
 	this.informational = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
 		this.__msg( LOGniMsgMessage, 'INFO', LOGniMsgNo );
-	}
+	};
 
 	this.warning = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
 		this.__msg( LOGniMsgMessage, 'WARN', LOGniMsgNo );
-	}
+	};
 
 	this.error = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
 		this.__msg( LOGniMsgMessage, 'ERROR', LOGniMsgNo );
-	}
+	};
 
 	// synonym
 	this.warn = this.warning;
@@ -220,12 +222,14 @@ var logni = new function() {
 	// alias
 	this.emergency = function( LOGniMsgMessage ) {
 		this.__msg( LOGniMsgMessage, 'FATAL', 4 );
-	}
+	};
 
 	this.notice = function( LOGniMsgMessage ) {
 		this.__msg( LOGniMsgMessage, 'INFO', 1 );
-	}
+	};
 
 	// initialize
 	this.__init__();
-}
+};
+
+module.exports = logni;
