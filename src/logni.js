@@ -65,7 +65,9 @@ var logni = new function() {
 	};
 
 	// set mask
-	this.mask = function( LOGniMask='ALL' ) {
+	this.mask = function( LOGniMask ) {
+		if (LOGniMask === undefined) LOGniMask='ALL';
+
 		if ( this.debugMode == 1 ) {
 			console.log( 'DEBUG: init: logni.mask('+ LOGniMask +')');
 		}
@@ -123,7 +125,9 @@ var logni = new function() {
 	};
 
 	// set stderr
-	this.stderr = function( LOGniStderr=0 ) {
+	this.stderr = function( LOGniStderr ) {
+		if (LOGniStderr === undefined) LOGniStderr=0;
+
 		if ( this.debugMode == 1 ) {
 			console.log( 'DEBUG: init: logni.stderr('+ LOGniStderr +')');
 		}
@@ -131,7 +135,8 @@ var logni = new function() {
 	};
 
 	// log use?
-	this.__logUse = function( LOGniMsgLevel0, LOGniMsgNo=1 ) {
+	this.__logUse = function( LOGniMsgLevel0, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
 		// mask=ALL
 		if ( this.LOGniMask == 'ALL' ) {
@@ -163,7 +168,10 @@ var logni = new function() {
 	};
 
 	// log message
-	this.__msg = function( LOGniMsgMessage='', LOGniMsgLevel='DEBUG', LOGniMsgNo=1 ) {
+	this.__msg = function( LOGniMsgMessage, LOGniMsgLevel, LOGniMsgNo ) {
+		if (LOGniMsgMessage === undefined) LOGniMsgMessage='';
+		if (LOGniMsgLevel === undefined) LOGniMsgLevel='DEBUG';
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
 		// priority
 		if (LOGniMsgNo < 1) {
@@ -194,23 +202,28 @@ var logni = new function() {
 	};
 
 	// log method
-	this.debug = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
+	this.debug = function( LOGniMsgMessage, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 		this.__msg( LOGniMsgMessage, 'DEBUG', LOGniMsgNo );
 	};
 
-	this.critical = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
+	this.critical = function( LOGniMsgMessage, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 		this.__msg( LOGniMsgMessage, 'FATAL', LOGniMsgNo );
 	};
 
-	this.informational = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
+	this.informational = function( LOGniMsgMessage, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 		this.__msg( LOGniMsgMessage, 'INFO', LOGniMsgNo );
 	};
 
-	this.warning = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
+	this.warning = function( LOGniMsgMessage, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 		this.__msg( LOGniMsgMessage, 'WARN', LOGniMsgNo );
 	};
 
-	this.error = function( LOGniMsgMessage, LOGniMsgNo=1 ) {
+	this.error = function( LOGniMsgMessage, LOGniMsgNo ) {
+		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 		this.__msg( LOGniMsgMessage, 'ERROR', LOGniMsgNo );
 	};
 
