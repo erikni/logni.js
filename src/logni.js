@@ -35,6 +35,7 @@ var logni = new function() {
 		}
 
 		this.__logMaskNameShort = [];
+		var i=0;
 		for (i = 0; i < this.__logMaskNameFull.length; i++) {
 			var _s = this.__logMaskNameFull[i].substring(0,1);
 			this.__logMaskNameShort[i] = _s;
@@ -70,6 +71,7 @@ var logni = new function() {
 		}
 		this.LOGniMask = LOGniMask;
 
+		var i=0;
 		if ( this.LOGniMask == 'ALL' ) {
 			
 			// set default LEVEL=1
@@ -232,4 +234,8 @@ var logni = new function() {
 	this.__init__();
 };
 
-module.exports = logni;
+// package.json
+if ('undefined' !== typeof module) {
+	module.exports = logni;
+}
+

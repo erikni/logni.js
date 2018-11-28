@@ -1,7 +1,7 @@
 {
   "name": "logni.js",
-  "version": "0.0.2",
-  "description": "logger js",
+  "version": "0.0.3",
+  "description": "Full-stack error tracking for all apps in javascript",
   "main": "src/logni.js",
   "directories": {
     "test": "test"
@@ -17,7 +17,7 @@
     "logger",
     "js"
   ],
-  "author": "Erik Brozek <erik@brozek.name>",
+  "author": "Erik Brozek <erik+logni@brozek.name>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/erikni/logni.js/issues"
