@@ -1,6 +1,6 @@
 {
   "name": "logni.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Full-stack error tracking for all apps in javascript",
   "main": "src/logni.js",
   "directories": {
