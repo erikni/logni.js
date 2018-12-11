@@ -1,13 +1,15 @@
 {
   "name": "logni.js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Full-stack error tracking for all apps in javascript",
   "main": "src/logni.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "build": "build"
   },
   "scripts": {
-    "test": "test/logni.html"
+    "test": "echo 'open browser: test/logni.html'",
+    "build": "mkdir -p build/js && ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/erikni/logni.js/issues"
   },
-  "homepage": "https://logni.net"
+  "homepage": "https://logni.net",
+  "dependencies": {
+    "babel-minify": "^0.5.0"
+  }
 }

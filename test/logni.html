@@ -2,17 +2,28 @@
 <head><script src="../src/logni.js"></script></head>
 <body>
 
-<script>
-logni.debugMode = 0;
-logni.mask( 'I3E1F1W2')
-logni.stderr(1)
+	<script>
+		logni.debugMode = 0;
+		logni.mask(	'I3E1C1W2'	);
+		logni.stderr(	1		);
+		logni.file('https://develop-jslib.logni.net' );
 
-logni.debug(    'test debug' );
-logni.info(     'info test', 4);
-logni.warn(     'test warning', 3 );
-logni.error(    'test error' );
-logni.critical( 'test critical' );
-</script>
+		logni.env( 	'local' 	);
+		logni.release( 	'0.0.1' 	);
+		logni.name( 	'testlog' 	);
+
+		logni.info( 	'start ... '		,4 );
+
+		logni.debug(    'log debug test' 	);
+		logni.info(     'log info test'		,4 );
+		logni.warn(     'log warning test'	,3 );
+		logni.error(    'log error test' 	);
+
+		logni.name( 	'xxxlog' 		);
+		logni.critical( 'log critical test' 	);
+
+		logni.info( 	'... end'		,4 );
+	</script>
 
 </body>
 </html>

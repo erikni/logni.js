@@ -12,7 +12,11 @@ branches:
         - develop
 
 before_install:
+	- mkdir -p build/js
         - sudo npm install -g jshint
+        - sudo npm install babel-minify
 
 # command to run tests
-script: jshint --verbose --show-non-errors src/logni.js
+script: 
+	- ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
+	- jshint --verbose --show-non-errors src/logni.js
