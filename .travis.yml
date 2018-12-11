@@ -26,8 +26,8 @@ before_install:
   - npm install 
 
 install:
-  - sudo npm install -g jshint
   - npm install babel-minify
+  - npm install -g jshint
 
 # command to run tests
 script: 
