@@ -1,6 +1,6 @@
 {
   "name": "logni.js",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "Full-stack error tracking for all apps in javascript",
   "main": "src/logni.js",
   "directories": {
@@ -8,7 +8,7 @@
     "build": "build"
   },
   "scripts": {
-    "test": "echo 'open browser: test/logni.html'",
+    "test": "jshint --verbose --show-non-errors src/logni.js",
     "build": "mkdir -p build/js && ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js"
   },
   "repository": {
@@ -26,6 +26,7 @@
   },
   "homepage": "https://logni.net",
   "dependencies": {
-    "babel-minify": "^0.5.0"
+    "babel-minify": "^0.5.0",
+    "jshint": "^2.9.7"
   }
 }

@@ -2,9 +2,16 @@ language: node_js
 sudo: enabled
 
 node_js:
-  - 8
-  - 10
-  - 11
+  - 'node'
+  - '8'
+  - '6'
+  - '4'
+  - '0.12'
+  - '0.10'
+
+cache:
+  directories:
+    - "node_modules"
 
 branches:
   only:
@@ -14,10 +21,13 @@ branches:
 before_install:
   - mkdir -p build/js
   - sudo apt-get install -y nodejs
+  - node --version
+  - rm -rf ./node_modules package-lock.json
+  - npm install 
 
 install:
   - sudo npm install -g jshint
-  - sudo npm install babel-minify
+  - npm install babel-minify
 
 # command to run tests
 script: 
