@@ -45,7 +45,9 @@ var logni = new function() {
 			var _s = this.__logMaskSeverityFull[i].substring(0,1);
 			this.__logMaskSeverityShort[i] = _s;
 			if ( this.debugMode == 1 ) {
-				console.log( 'DEBUG: level fullName="'+ this.__logMaskSeverityFull[i]+'" -> shortName="'+_s+'"' );
+				console.log( 'DEBUG: level fullName="'+ 
+					this.__logMaskSeverityFull[i]+'" -> shortName="'+_s+'"' 
+				);
 			}
 
 			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 0; 
@@ -107,7 +109,10 @@ var logni = new function() {
 				var _no= parseInt(this.LOGniMask.substring(i+1,i+2));
 				if ( this.debugMode == 1 ) {
 					if ( this.debugMode == 1 ) {
-						console.log( 'DEBUG: mask="'+this.LOGniMask+'" '+i+':'+(i+1)+' level="'+_l+'" no="'+_no+'"' );
+						console.log( 'DEBUG: mask="' +
+							this.LOGniMask+'" '+i+':'+(i+1)+
+							' level="'+_l+'" no="'+_no+'"' 
+						);
 					}
 				}
 
@@ -198,7 +203,9 @@ var logni = new function() {
 
 		if(typeof this.__LOGniMaskSeverity[LOGniMsgSeverity0] === 'undefined') {
 			if ( this.debugMode == 1 ) {
-				console.log( 'DEBUG: this.__LOGniMaskSeverity['+LOGniMsgSeverity0+'] is undefined' );
+				console.log( 'DEBUG: this.__LOGniMaskSeverity['+
+					LOGniMsgSeverity0+'] is undefined' 
+				);
 			}
 			return 0;
 		}
@@ -207,14 +214,18 @@ var logni = new function() {
 		var _no = this.__LOGniMaskSeverity[ LOGniMsgSeverity0 ];
 		if ( LOGniMsgNo < _no ) {
 			if ( this.debugMode == 1 ) {
-				console.log( 'DEBUG: HIDDEN level='+LOGniMsgSeverity0+' msgNo='+LOGniMsgNo+' < maskNo='+_no+'' );
+				console.log( 'DEBUG: HIDDEN level='+
+					LOGniMsgSeverity0+' msgNo='+LOGniMsgNo+' < maskNo='+_no+'' 
+				);
 			}
 			return 0;
 		}
 
 		// message visible
 		if ( this.debugMode == 1 ) {
-			console.log( 'DEBUG: VISIBLE level='+LOGniMsgSeverity0+' msgNo='+LOGniMsgNo+' >= maskNo='+_no+'' );
+			console.log( 'DEBUG: VISIBLE level='+
+				LOGniMsgSeverity0+' msgNo='+LOGniMsgNo+' >= maskNo='+_no+'' 
+			);
 		}
 		return 1;
 
@@ -245,16 +256,21 @@ var logni = new function() {
 		// stderr(1)
 		if ( this.LOGniStderr == 1 ) {
 			if ( LOGniMsgExt == 1 ) {
-				console.log('%c'+ __logniTime +' '+ __logniPrefix +': '+LOGniMsgMessage +' {'+this.__LOGniNameStr+', '+this.__LOGniRelStr+', '+this.__LOGniEnvStr+'}', 'color: '+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] );
+				console.log('%c'+ __logniTime +' '+ __logniPrefix +': '+LOGniMsgMessage +
+					' {'+this.__LOGniNameStr+', '+this.__LOGniRelStr+', '+this.__LOGniEnvStr+'}', 
+					'color: '+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
+				);
 			} else {
-				console.log('%c'+ __logniTime +' '+ __logniPrefix +': '+LOGniMsgMessage, 'color: '+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] );
+				console.log('%c'+ __logniTime +' '+ __logniPrefix +': '+LOGniMsgMessage, 
+					'color: '+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
+				);
 			}
 		}
 
 		// file()
 		if ( this.__LOGniFile != "" ) {
-			var __url=this.__LOGniFile+'/log/'+ __logniPrefix +'.json?n='+this.LOGniName+'&t='+__logniTS+'&m='+encodeURIComponent(LOGniMsgMessage);
-			console.log('URL:'+__url );
+			var __url=this.__LOGniFile+'/log/'+ __logniPrefix +'.json?n='+this.LOGniName+'&t='+
+				__logniTS+'&m='+encodeURIComponent(LOGniMsgMessage);
 
 			var __req = new XMLHttpRequest();
 			__req.open('GET', __url, true);
