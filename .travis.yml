@@ -1,0 +1,36 @@
+language: node_js
+sudo: enabled
+
+node_js:
+  - 'node'
+  - '10'
+  - '8'
+  - '6'
+
+cache:
+  directories:
+    - "node_modules"
+
+branches:
+  only:
+  - master
+  - develop
+
+before_install:
+  - mkdir -p build/js
+  - sudo apt-get install -y nodejs
+  - node --version
+  - rm -rf ./node_modules package-lock.json
+  - npm install 
+
+install:
+  - npm install babel-minify
+  - npm install -g jshint
+
+# command to run tests
+script: 
+  - echo "minify src/logni.js ... "
+  - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
+
+  - echo "jshint src/logni.js ... "
+  - jshint --verbose --show-non-errors src/logni.js

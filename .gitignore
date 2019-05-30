@@ -1,0 +1,23 @@
+build/
+
+# node
+node_modules/
+package-lock.json
+
+# debian
+debian/logni-libjs.debhelper.log
+debian/logni-libjs/
+.deb-*
+.captainci-*
+
+debian/build
+debian/prebuild
+debian/postbuild
+
+debian/conffiles
+debian/control
+debian/cron.d
+debian/dirs
+debian/install
+debian/links
+debian/rules
