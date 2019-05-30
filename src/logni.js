@@ -1,21 +1,19 @@
 
 /*
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * GNU General Public License v3.0
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * Permissions of this strong copyleft license are conditioned on making 
+ * available complete source code of licensed works and modifications, 
+ * which include larger works using a licensed work, under the same license. 
+ * Copyright and license notices must be preserved. Contributors provide 
+ * an express grant of patent rights.
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * see all: https://github.com/erikni/logni.js/blob/master/LICENSE
  */
 
 /**
- * @fileoverview logni is a library to log in JavaScript  
- * Full-stack error tracking for all apps in javascript
+ * @fileoverview logni is avascript library for event logging 
+ * and application states
  * 
  * <h3>Example:</h3>
  * <pre>
@@ -36,7 +34,7 @@
  * logni.error('log error test');
  * </pre>
  *
- * @version 0.1.0
+ * @version 0.1.2
  * @author Erik Brozek - https://github.com/erikni
  * @since 2017
  * @static

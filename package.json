@@ -1,7 +1,7 @@
 {
   "name": "logni.js",
-  "version": "0.1.0",
-  "description": "Full-stack error tracking for all apps in javascript",
+  "version": "0.1.2",
+  "description": "javascript library for event logging and application states",
   "main": "src/logni.js",
   "directories": {
     "test": "test",
