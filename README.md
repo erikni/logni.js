@@ -1,15 +1,21 @@
 # logni.js
 logni is a javascript library for event logging and application states
+
+__How to install?__
+```
+$ npm i logni.js
+```
   
-**Example:**
+__Example:__
 
-__Load script__
+_Load script_
 ```
-<script src="/pathto/logni.js" type="text/javascript"></script>
+<script src="node_modules/logni.js/src/logni.js" type="text/javascript"></script>
 ```
 
-__Initialization__
-```<script type="text/javascript">
+_Initialization_
+```
+<script type="text/javascript">
   logni.debugMode = 0; // Set debug mode
   logni.mask('ALL'); // Set mask
   logni.stderr(1); // Set standard error
@@ -21,8 +27,9 @@ __Initialization__
 </script>
  ```
  
-__Log messages__
-```<script type="text/javascript">
+_Log messages_
+```
+<script type="text/javascript">
   logni.debug('log debug test'); // debug message with priority 1
   logni.info('log info test' ,4); // informational message with priority 4
   logni.warn('log warning test' ,3); // warning message with priority 3
