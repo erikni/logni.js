@@ -1,28 +1,32 @@
 <html>
-<head><script src="../src/logni.js"></script></head>
+<head>
+	<script src="../src/logni.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		logni.debugMode = 0;
+		logni.mask('I3E1C1W2');
+		logni.stderr(1);
+		logni.file('https://develop-jslib.logni.net');
+
+		logni.env('local');
+		logni.release('0.0.1');
+		logni.name('testlog');
+	</script>
+
+</head>
 <body>
 
-	<script>
-		logni.debugMode = 0;
-		logni.mask(	'I3E1C1W2'	);
-		logni.stderr(	1		);
-		logni.file('https://develop-jslib.logni.net' );
+	<script type="text/javascript">
+		logni.info('start ... ', 4);
 
-		logni.env( 	'local' 	);
-		logni.release( 	'0.0.1' 	);
-		logni.name( 	'testlog' 	);
+		logni.debug('log debug test');
+		logni.info('log info test;', 4);
+		logni.warn('log warning test', 3);
+		logni.error('log error test');
 
-		logni.info( 	'start ... '		,4 );
+		logni.name('xxxlog');
+		logni.critical('log critical test');
 
-		logni.debug(    'log debug test' 	);
-		logni.info(     'log info test'		,4 );
-		logni.warn(     'log warning test'	,3 );
-		logni.error(    'log error test' 	);
-
-		logni.name( 	'xxxlog' 		);
-		logni.critical( 'log critical test' 	);
-
-		logni.info( 	'... end'		,4 );
+		logni.info('... end', 4);
 	</script>
 
 </body>
