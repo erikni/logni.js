@@ -42,6 +42,10 @@
  */
 
 
+// nodejs compatible mode
+var Console = console;
+
+
 var logni = new function() {
 
 	this.debugMode 	= 0;
@@ -80,7 +84,7 @@ var logni = new function() {
 
 		this.__logMaskSeverityFull 	= ["DEBUG", "INFO", "WARN", "ERROR", "CRITICAL"];
 		if (this.debugMode == 1) {
-			console.log("DEBUG: this.__logMaskSeverityFull="+ this.__logMaskSeverityFull);
+			Console.log("DEBUG: this.__logMaskSeverityFull="+ this.__logMaskSeverityFull);
 		}
 
 		this.__logMaskSeverityShort = [];
@@ -89,7 +93,7 @@ var logni = new function() {
 			var _s = this.__logMaskSeverityFull[i].substring(0,1);
 			this.__logMaskSeverityShort[i] = _s;
 			if (this.debugMode == 1) {
-				console.log("DEBUG: level fullName="+ 
+				Console.log("DEBUG: level fullName="+ 
 					this.__logMaskSeverityFull[i]+" -> shortName="+_s 
 				);
 			}
@@ -99,13 +103,13 @@ var logni = new function() {
 
 		}
 		if (this.debugMode == 1) {
-			console.log("DEBUG: this.__logMaskSeverityShort="+ this.__logMaskSeverityShort);
+			Console.log("DEBUG: this.__logMaskSeverityShort="+ this.__logMaskSeverityShort);
 
-			console.log("DEBUG: this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
-			console.log(this.__LOGniMaskSeverity);
+			Console.log("DEBUG: this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
+			Console.log(this.__LOGniMaskSeverity);
 
-			console.log("DEBUG: this.__LOGniMaskNo="+ this.__LOGniMaskNo);
-			console.log(this.__LOGniMaskNo);
+			Console.log("DEBUG: this.__LOGniMaskNo="+ this.__LOGniMaskNo);
+			Console.log(this.__LOGniMaskNo);
 		}
 
 		// default		
@@ -126,7 +130,7 @@ var logni = new function() {
 		if (LOGniMask === undefined) LOGniMask="ALL";
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.mask("+ LOGniMask +")");
+			Console.log("DEBUG: init: logni.mask("+ LOGniMask +")");
 		}
 		this.LOGniMask = LOGniMask;
 
@@ -159,7 +163,7 @@ var logni = new function() {
 				var _no= parseInt(this.LOGniMask.substring(i+1,i+2));
 				if (this.debugMode == 1) {
 					if (this.debugMode == 1) {
-						console.log("DEBUG: mask="+
+						Console.log("DEBUG: mask="+
 							this.LOGniMask+" "+i+":"+(i+1)+
 							" level="+_l+" no="+_no
 						);
@@ -168,7 +172,7 @@ var logni = new function() {
 
 				if(typeof this.__LOGniMaskSeverity[_l] === "undefined") {
 					if (this.debugMode == 1) {
-						console.log("DEBUG: this.__LOGniMaskSeverity["+_l+"] is undefined");
+						Console.log("DEBUG: this.__LOGniMaskSeverity["+_l+"] is undefined");
 					}
 					return 0;
 				} else {
@@ -176,8 +180,8 @@ var logni = new function() {
 				}
 			}
 			if (this.debugMode == 1) {
-				console.log("DEBUG: set this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
-				console.log(this.__LOGniMaskSeverity);
+				Console.log("DEBUG: set this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
+				Console.log(this.__LOGniMaskSeverity);
 			}
 		}
 		
@@ -196,7 +200,7 @@ var logni = new function() {
 		if (LOGniStderr === undefined) LOGniStderr=0;
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.stderr("+ LOGniStderr +")");
+			Console.log("DEBUG: init: logni.stderr("+ LOGniStderr +")");
 		}
 		this.LOGniStderr = LOGniStderr;
 	};
@@ -212,7 +216,7 @@ var logni = new function() {
 		if (LOGniFile === undefined) LOGniFile="";
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.file("+ LOGniFile +")");
+			Console.log("DEBUG: init: logni.file("+ LOGniFile +")");
 		}
 		this.__LOGniFile = LOGniFile;
 	};
@@ -229,7 +233,7 @@ var logni = new function() {
 		if (LOGniEnv === undefined) LOGniEnv="live";
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.enviroment("+ LOGniEnv +")");
+			Console.log("DEBUG: init: logni.enviroment("+ LOGniEnv +")");
 		}
 		this.__LOGniEnvStr = "env="+LOGniEnv;
 		this.__msg("Init enviroment="+LOGniEnv, "INFO", 3, 0);
@@ -247,7 +251,7 @@ var logni = new function() {
 		if (LOGniName === undefined) LOGniName="unknown";
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.name("+ LOGniName +")");
+			Console.log("DEBUG: init: logni.name("+ LOGniName +")");
 		}
 		this.LOGniName = LOGniName;
 		this.__LOGniNameStr = "name="+LOGniName;
@@ -266,7 +270,7 @@ var logni = new function() {
 		if (LOGniRelease === undefined) LOGniRelease="0.0.0";
 
 		if (this.debugMode == 1) {
-			console.log("DEBUG: init: logni.release("+ LOGniRelease +")");
+			Console.log("DEBUG: init: logni.release("+ LOGniRelease +")");
 		}
 		this.LOGniRelease = LOGniRelease;
 		this.__LOGniRelStr = "rel="+LOGniRelease;
@@ -292,7 +296,7 @@ var logni = new function() {
 
 		if(typeof this.__LOGniMaskSeverity[LOGniMsgSeverity0] === "undefined") {
 			if (this.debugMode == 1) {
-				console.log("DEBUG: this.__LOGniMaskSeverity["+
+				Console.log("DEBUG: this.__LOGniMaskSeverity["+
 					LOGniMsgSeverity0+"] is undefined"
 				);
 			}
@@ -303,7 +307,7 @@ var logni = new function() {
 		var _no = this.__LOGniMaskSeverity[LOGniMsgSeverity0];
 		if (LOGniMsgNo < _no) {
 			if (this.debugMode == 1) {
-				console.log("DEBUG: HIDDEN level="+
+				Console.log("DEBUG: HIDDEN level="+
 					LOGniMsgSeverity0+" msgNo="+LOGniMsgNo+" < maskNo="+_no
 				);
 			}
@@ -312,7 +316,7 @@ var logni = new function() {
 
 		// message visible
 		if (this.debugMode == 1) {
-			console.log("DEBUG: VISIBLE level="+
+			Console.log("DEBUG: VISIBLE level="+
 				LOGniMsgSeverity0+" msgNo="+LOGniMsgNo+" >= maskNo="+_no
 			);
 		}
@@ -355,12 +359,12 @@ var logni = new function() {
 		// stderr(1)
 		if (this.LOGniStderr == 1) {
 			if (LOGniMsgExt == 1) {
-				console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
+				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
 					" {"+this.__LOGniNameStr+", "+this.__LOGniRelStr+", "+this.__LOGniEnvStr+"}", 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
 				);
 			} else {
-				console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage, 
+				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage, 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
 				);
 			}
@@ -378,9 +382,9 @@ var logni = new function() {
 			__req.send(null);
 		}
 
-		//t = console.trace().toString();
+		//t = Console.trace().toString();
 		//for(var i=0, len=t.length; i < len; i++) {
-		//	console.log(t[i]);
+		//	Console.log(t[i]);
 		//}
 
 		return 1;
