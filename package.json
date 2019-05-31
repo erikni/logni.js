@@ -26,6 +26,6 @@
   },
   "homepage": "https://logni.net",
   "dependencies": {
-    "babel-minify": "^0.5.0",
+    "babel-minify": "^0.5.0"
   }
 }
