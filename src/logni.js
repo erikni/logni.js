@@ -18,7 +18,7 @@
  * <h3>Example:</h3>
  * <pre>
  * // initialization
- * logni.debugMode = 0;
+ * logni.debugMode = true;
  * logni.mask("ALL");
  * logni.stderr(1);
  * logni.file("https://yourweb/log");
@@ -48,14 +48,13 @@ var Console = console;
 
 var logni = new function() {
 
-	this.debugMode 	= 0;
-
+	// debugMode is disabled
+	this.debugMode 	= false;
 
 	// init
 	this.__init__  = function() {
 		
 		this.__LOGniMaskSeverity = {};
-		this.__LOGniMaskNo = {};
 
 		this.__LOGniRelStr = "rel=0.0.0";
 		this.__LOGniEnvStr = "env=local";
@@ -83,7 +82,7 @@ var logni = new function() {
 		};
 
 		this.__logMaskSeverityFull 	= ["DEBUG", "INFO", "WARN", "ERROR", "CRITICAL"];
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: this.__logMaskSeverityFull="+ this.__logMaskSeverityFull);
 		}
 
@@ -92,24 +91,20 @@ var logni = new function() {
 		for (i = 0; i < this.__logMaskSeverityFull.length; i++) {
 			var _s = this.__logMaskSeverityFull[i].substring(0,1);
 			this.__logMaskSeverityShort[i] = _s;
-			if (this.debugMode == 1) {
+			if (this.debugMode) {
 				Console.log("DEBUG: level fullName="+ 
 					this.__logMaskSeverityFull[i]+" -> shortName="+_s 
 				);
 			}
 
-			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 0; 
-			this.__LOGniMaskNo[this.__logMaskSeverityShort[i]] = 0; 
+			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 5; 
 
 		}
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: this.__logMaskSeverityShort="+ this.__logMaskSeverityShort);
 
 			Console.log("DEBUG: this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
 			Console.log(this.__LOGniMaskSeverity);
-
-			Console.log("DEBUG: this.__LOGniMaskNo="+ this.__LOGniMaskNo);
-			Console.log(this.__LOGniMaskNo);
 		}
 
 		// default		
@@ -129,7 +124,7 @@ var logni = new function() {
 	this.mask = function(LOGniMask) {
 		if (LOGniMask === undefined) LOGniMask="ALL";
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.mask("+ LOGniMask +")");
 		}
 		this.LOGniMask = LOGniMask;
@@ -154,15 +149,15 @@ var logni = new function() {
 
 			// set default LEVEL=0
 			for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
-				this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 0;
+				this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 5;
 			}
 
 			// set level
 			for (i = 0; i < l; i += 2) {
 				var _l = this.LOGniMask.substring(i,i+1);
 				var _no= parseInt(this.LOGniMask.substring(i+1,i+2), 10);
-				if (this.debugMode == 1) {
-					if (this.debugMode == 1) {
+				if (this.debugMode) {
+					if (this.debugMode) {
 						Console.log("DEBUG: mask="+
 							this.LOGniMask+" "+i+":"+(i+1)+
 							" level="+_l+" no="+_no
@@ -171,7 +166,7 @@ var logni = new function() {
 				}
 
 				if(typeof this.__LOGniMaskSeverity[_l] === "undefined") {
-					if (this.debugMode == 1) {
+					if (this.debugMode) {
 						Console.log("DEBUG: this.__LOGniMaskSeverity["+_l+"] is undefined");
 					}
 					return 0;
@@ -179,7 +174,7 @@ var logni = new function() {
 					this.__LOGniMaskSeverity[_l] = _no;
 				}
 			}
-			if (this.debugMode == 1) {
+			if (this.debugMode) {
 				Console.log("DEBUG: set this.__LOGniMaskSeverity="+ this.__LOGniMaskSeverity);
 				Console.log(this.__LOGniMaskSeverity);
 			}
@@ -199,7 +194,7 @@ var logni = new function() {
 	this.stderr = function(LOGniStderr) {
 		if (LOGniStderr === undefined) LOGniStderr=0;
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.stderr("+ LOGniStderr +")");
 		}
 		this.LOGniStderr = LOGniStderr;
@@ -215,7 +210,7 @@ var logni = new function() {
 	this.file = function(LOGniFile) {
 		if (LOGniFile === undefined) LOGniFile="";
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.file("+ LOGniFile +")");
 		}
 		this.__LOGniFile = LOGniFile;
@@ -232,7 +227,7 @@ var logni = new function() {
 
 		if (LOGniEnv === undefined) LOGniEnv="live";
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.enviroment("+ LOGniEnv +")");
 		}
 		this.__LOGniEnvStr = "env="+LOGniEnv;
@@ -250,7 +245,7 @@ var logni = new function() {
 
 		if (LOGniName === undefined) LOGniName="unknown";
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.name("+ LOGniName +")");
 		}
 		this.LOGniName = LOGniName;
@@ -269,7 +264,7 @@ var logni = new function() {
 
 		if (LOGniRelease === undefined) LOGniRelease="0.0.0";
 
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.release("+ LOGniRelease +")");
 		}
 		this.LOGniRelease = LOGniRelease;
@@ -291,36 +286,36 @@ var logni = new function() {
 
 		// mask=ALL
 		if (this.LOGniMask == "ALL") {
-			return 1;
+			return true;
 		}
 
 		if(typeof this.__LOGniMaskSeverity[LOGniMsgSeverity0] === "undefined") {
-			if (this.debugMode == 1) {
+			if (this.debugMode) {
 				Console.log("DEBUG: this.__LOGniMaskSeverity["+
 					LOGniMsgSeverity0+"] is undefined"
 				);
 			}
-			return 0;
+			return false;
 		}
 
 		// message hidden
 		var _no = this.__LOGniMaskSeverity[LOGniMsgSeverity0];
 		if (LOGniMsgNo < _no) {
-			if (this.debugMode == 1) {
+			if (this.debugMode) {
 				Console.log("DEBUG: HIDDEN level="+
 					LOGniMsgSeverity0+" msgNo="+LOGniMsgNo+" < maskNo="+_no
 				);
 			}
-			return 0;
+			return false;
 		}
 
 		// message visible
-		if (this.debugMode == 1) {
+		if (this.debugMode) {
 			Console.log("DEBUG: VISIBLE level="+
 				LOGniMsgSeverity0+" msgNo="+LOGniMsgNo+" >= maskNo="+_no
 			);
 		}
-		return 1;
+		return true;
 
 	};
 
@@ -352,7 +347,7 @@ var logni = new function() {
 		var __l0 = LOGniMsgSeverity.substring(0, 1);
 		var __logniPrefix = __l0 + LOGniMsgNo;
 
-		if (this.__logUse(__l0, LOGniMsgNo) == 0) { 
+		if (this.__logUse(__l0, LOGniMsgNo) == false) { 
 			return 0;
 		}
 
@@ -371,7 +366,7 @@ var logni = new function() {
 		}
 
 		// file()
-		if (this.__LOGniFile != "") {
+		if (this.__LOGniFile !== "") {
 			var __url=this.__LOGniFile+"/log/"+ __logniPrefix +".json?n="+this.LOGniName+"&t="+
 				__logniTS+"&m="+encodeURIComponent(LOGniMsgMessage);
 
@@ -496,4 +491,3 @@ var logni = new function() {
 if ("undefined" !== typeof module) {
 	module.exports = logni;
 }
-

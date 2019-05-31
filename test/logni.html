@@ -2,7 +2,7 @@
 <head>
 	<script src="../src/logni.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		logni.debugMode = 1;
+		logni.debugMode = false;
 		logni.name('testlog');
 		logni.mask('I3E1C1W2');
 		logni.stderr(1);
@@ -16,17 +16,18 @@
 <body>
 
 	<script type="text/javascript">
-		logni.info('start ... ', 4);
+		logni.info('start ... is visible ', 4);
 
-		logni.debug('log debug test');
-		logni.info('log info test;', 4);
-		logni.warn('log warning test', 3);
-		logni.error('log error test');
+		logni.debug('log debug test is hidden -> mask for debug not set');
+		logni.info('log info test is visible;', 4);
+		logni.warn('log warning test is visible', 3);
+		logni.error('log error test is visible');
 
 		logni.name('xxxlog');
-		logni.critical('log critical test');
+		logni.critical('log critical test is visible');
+		logni.info('log info test is hidden -> low mask',1);
 
-		logni.info('... end', 4);
+		logni.info('... end. is visible', 4);
 	</script>
 
 </body>
