@@ -181,7 +181,7 @@ var logni = new function() {
 		}
 		
 
-		this.__msg("Init mask="+LOGniMask, "INFO", 3, 0);
+		this.__msg("Init mask="+LOGniMask, "INFO", 1, 0);
 	};
 
 
@@ -231,7 +231,7 @@ var logni = new function() {
 			Console.log("DEBUG: init: logni.enviroment("+ LOGniEnv +")");
 		}
 		this.__LOGniEnvStr = "env="+LOGniEnv;
-		this.__msg("Init enviroment="+LOGniEnv, "INFO", 3, 0);
+		this.__msg("Init enviroment="+LOGniEnv, "INFO", 1, 0);
 	};
 
 
@@ -250,7 +250,7 @@ var logni = new function() {
 		}
 		this.LOGniName = LOGniName;
 		this.__LOGniNameStr = "name="+LOGniName;
-		this.__msg("Init name="+LOGniName, "INFO", 3, 0);
+		this.__msg("Init name="+LOGniName, "INFO", 1, 0);
 	};
 
 
@@ -269,7 +269,7 @@ var logni = new function() {
 		}
 		this.LOGniRelease = LOGniRelease;
 		this.__LOGniRelStr = "rel="+LOGniRelease;
-		this.__msg("Init release="+LOGniRelease, "INFO", 3, 0);
+		this.__msg("Init release="+LOGniRelease, "INFO", 1, 0);
 	};
 
 
@@ -352,7 +352,7 @@ var logni = new function() {
 		}
 
 		// stderr(1)
-		if (this.LOGniStderr == 1) {
+		if (this.LOGniStderr) {
 			if (LOGniMsgExt == 1) {
 				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
 					" {"+this.__LOGniNameStr+", "+this.__LOGniRelStr+", "+this.__LOGniEnvStr+"}", 
@@ -375,6 +375,10 @@ var logni = new function() {
 			__req.setRequestHeader("Content-type","application/json; charset=utf-8");
 			__req.withCredentials = true;
 			__req.send(null);
+		
+			if (this.debugMode) {
+				Console.log("URL:"+__url);
+			}
 		}
 
 		//t = Console.trace().toString();
