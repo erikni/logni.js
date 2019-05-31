@@ -4,6 +4,9 @@ build/
 node_modules/
 package-lock.json
 
+# test
+coverage/
+
 # debian
 debian/logni-libjs.debhelper.log
 debian/logni-libjs/
