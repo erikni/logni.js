@@ -160,7 +160,7 @@ var logni = new function() {
 			// set level
 			for (i = 0; i < l; i += 2) {
 				var _l = this.LOGniMask.substring(i,i+1);
-				var _no= parseInt(this.LOGniMask.substring(i+1,i+2));
+				var _no= parseInt(this.LOGniMask.substring(i+1,i+2), 10);
 				if (this.debugMode == 1) {
 					if (this.debugMode == 1) {
 						Console.log("DEBUG: mask="+
