@@ -1,3 +1,8 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0fb77aa3a049446db8d61b854b985abc)](https://www.codacy.com/app/erikni/logni.js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=erikni/logni.js&amp;utm_campaign=Badge_Grade)
+[![Github Releases](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](https://github.com/erikni/logni.js/releases)
+[![Build Status](https://secure.travis-ci.org/erikni/logni.js.png?branch=master)](http://travis-ci.org/erikni/logni.js)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENCE)
+
 # logni.js
 logni is a javascript library for event logging and application states
 
@@ -16,7 +21,7 @@ _Load script_
 _Initialization_
 ```
 <script type="text/javascript">
-  logni.debugMode = 0; // Set debug mode
+  logni.debugMode = false; // Set debug mode
   logni.mask('ALL'); // Set mask
   logni.stderr(1); // Set standard error
   logni.file('https://yourweb/log'); // Set file/url
