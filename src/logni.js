@@ -34,7 +34,7 @@
  * logni.error("log error test");
  * </pre>
  *
- * @version 0.1.6
+ * @version 0.1.7
  * @author Erik Brozek - https://github.com/erikni
  * @since 2017
  * @static
@@ -366,7 +366,9 @@ var logni = new function() {
 			}
 
 			// if environment dont set -> no visible
-			if (this.__LOGniRelStr === "rel=0.0.0" && this.__LOGniNameStr === "name=unknown" && this.__LOGniEnvStr === "env=local") {
+			if (this.__LOGniRelStr === "rel=0.0.0" && 
+				this.__LOGniNameStr === "name=unknown" &&
+				this.__LOGniEnvStr === "env=local") {
 				LOGniMsgExtVisible = false;
 			}
 

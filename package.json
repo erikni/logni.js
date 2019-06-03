@@ -1,6 +1,6 @@
 {
   "name": "logni.js",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "javascript library for event logging and application states",
   "main": "src/logni.js",
   "directories": {
