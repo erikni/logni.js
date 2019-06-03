@@ -81,11 +81,13 @@ var logni = new function() {
 			CRITICAL: "danger",
 		};
 
+		// severity (fullname)
 		this.__logMaskSeverityFull 	= ["DEBUG", "INFO", "WARN", "ERROR", "CRITICAL"];
 		if (this.debugMode) {
 			Console.log("DEBUG: this.__logMaskSeverityFull="+ this.__logMaskSeverityFull);
 		}
 
+		// severity (sortname)
 		this.__logMaskSeverityShort = [];
 		var i=0;
 		for (i = 0; i < this.__logMaskSeverityFull.length; i++) {
@@ -124,6 +126,7 @@ var logni = new function() {
 	this.mask = function(LOGniMask) {
 		if (LOGniMask === undefined) LOGniMask="ALL";
 
+		// debug mask
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.mask("+ LOGniMask +")");
 		}
@@ -181,7 +184,7 @@ var logni = new function() {
 		}
 		
 
-		this.__msg("Init mask="+LOGniMask, "INFO", 1, 0);
+		this.__msg("Init mask="+LOGniMask, "INFO", 1, false);
 	};
 
 
@@ -194,6 +197,7 @@ var logni = new function() {
 	this.stderr = function(LOGniStderr) {
 		if (LOGniStderr === undefined) LOGniStderr=0;
 
+		// debug stderr
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.stderr("+ LOGniStderr +")");
 		}
@@ -210,6 +214,7 @@ var logni = new function() {
 	this.file = function(LOGniFile) {
 		if (LOGniFile === undefined) LOGniFile="";
 
+		// debug file/url
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.file("+ LOGniFile +")");
 		}
@@ -224,15 +229,16 @@ var logni = new function() {
   	 * @static
   	 */
 	this.enviroment = function(LOGniEnv) {
-
 		if (LOGniEnv === undefined) LOGniEnv="live";
 
+		// debug enviroment
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.enviroment("+ LOGniEnv +")");
 		}
 		this.__LOGniEnvStr = "env="+LOGniEnv;
-		this.__msg("Init enviroment="+LOGniEnv, "INFO", 1, 0);
+		this.__msg("Init enviroment="+LOGniEnv, "INFO", 1, false);
 	};
+	this.env = this.enviroment;
 
 
   	/**
@@ -242,15 +248,15 @@ var logni = new function() {
   	 * @static
   	 */
 	this.name = function(LOGniName) {
-
 		if (LOGniName === undefined) LOGniName="unknown";
 
+		// debug name
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.name("+ LOGniName +")");
 		}
 		this.LOGniName = LOGniName;
 		this.__LOGniNameStr = "name="+LOGniName;
-		this.__msg("Init name="+LOGniName, "INFO", 1, 0);
+		this.__msg("Init name="+LOGniName, "INFO", 1, false);
 	};
 
 
@@ -261,15 +267,15 @@ var logni = new function() {
   	 * @static
   	 */
 	this.release = function(LOGniRelease) {
-
 		if (LOGniRelease === undefined) LOGniRelease="0.0.0";
 
+		// debug release
 		if (this.debugMode) {
 			Console.log("DEBUG: init: logni.release("+ LOGniRelease +")");
 		}
 		this.LOGniRelease = LOGniRelease;
 		this.__LOGniRelStr = "rel="+LOGniRelease;
-		this.__msg("Init release="+LOGniRelease, "INFO", 1, 0);
+		this.__msg("Init release="+LOGniRelease, "INFO", 1, false);
 	};
 
 
@@ -326,7 +332,7 @@ var logni = new function() {
   	 * @param {string} LOGniMsgMessage,
   	 * @param {string} LOGniMsgSeverity,
   	 * @param {number} LOGniMsgNo,
-  	 * @param {number} LOGniMsgExt,
+  	 * @param {boolean} LOGniMsgExt,
 	 * @return {number} return
   	 * @private
   	 */
@@ -353,11 +359,24 @@ var logni = new function() {
 
 		// stderr(1)
 		if (this.LOGniStderr) {
-			if (LOGniMsgExt == 1) {
+
+			var LOGniMsgExtVisible = false;
+			if (LOGniMsgExt) {
+				LOGniMsgExtVisible = true;
+			}
+
+			// if environment dont set -> no visible
+			if (this.__LOGniRelStr === "rel=0.0.0" && this.__LOGniNameStr === "name=unknown" && this.__LOGniEnvStr === "env=local") {
+				LOGniMsgExtVisible = false;
+			}
+
+			// log messsage with env params
+			if (LOGniMsgExtVisible) {
 				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
 					" {"+this.__LOGniNameStr+", "+this.__LOGniRelStr+", "+this.__LOGniEnvStr+"}", 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
 				);
+			// log message without env params
 			} else {
 				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage, 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
@@ -365,7 +384,7 @@ var logni = new function() {
 			}
 		}
 
-		// file()
+		// send message to log server
 		if (this.__LOGniFile !== "") {
 			var __url=this.__LOGniFile+"/log/"+ __logniPrefix +".json?n="+this.LOGniName+"&t="+
 				__logniTS+"&m="+encodeURIComponent(LOGniMsgMessage);
@@ -375,7 +394,8 @@ var logni = new function() {
 			__req.setRequestHeader("Content-type","application/json; charset=utf-8");
 			__req.withCredentials = true;
 			__req.send(null);
-		
+	
+			// debug url	
 			if (this.debugMode) {
 				Console.log("URL:"+__url);
 			}
@@ -399,7 +419,7 @@ var logni = new function() {
   	 */
 	this.debug = function(LOGniMsgMessage, LOGniMsgNo) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, 1);
+		this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, true);
 	};
 
 
@@ -412,7 +432,7 @@ var logni = new function() {
   	 */
 	this.critical = function(LOGniMsgMessage, LOGniMsgNo) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, 1);
+		this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, true);
 	};
 
 
@@ -425,7 +445,7 @@ var logni = new function() {
   	 */
 	this.informational = function(LOGniMsgMessage, LOGniMsgNo) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, 1);
+		this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, true);
 	};
 
 
@@ -438,7 +458,7 @@ var logni = new function() {
   	 */
 	this.warning = function(LOGniMsgMessage, LOGniMsgNo) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, 1);
+		this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, true);
 	};
 
 
@@ -451,17 +471,16 @@ var logni = new function() {
   	 */
 	this.error = function(LOGniMsgMessage, LOGniMsgNo) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, 1);
+		this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, true);
 	};
 
 
-	// synonym
+	// synonym log mesage
 	this.warn = this.warning;
 	this.info = this.informational;
 	this.fatal = this.critical;
 	this.dbg = this.debug;	
 	this.err = this.error;	
-	this.env = this.enviroment;
 
 
   	/**
@@ -472,7 +491,7 @@ var logni = new function() {
   	 * @static
   	 */
 	this.emergency = function(LOGniMsgMessage) {
-		this.__msg(LOGniMsgMessage, "CRITICAL", 4, 1);
+		this.__msg(LOGniMsgMessage, "CRITICAL", 4, true);
 	};
 
 
@@ -484,7 +503,7 @@ var logni = new function() {
   	 * @static
   	 */
 	this.notice = function(LOGniMsgMessage) {
-		this.__msg(LOGniMsgMessage, "INFO", 1, 1);
+		this.__msg(LOGniMsgMessage, "INFO", 1, true);
 	};
 
 	// initialize
