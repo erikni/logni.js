@@ -1,3 +1,4 @@
+[![npm version](http://img.shields.io/npm/v/logni.js.svg?style=flat)](https://npmjs.org/package/logni.js "View this project on npm")
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0fb77aa3a049446db8d61b854b985abc)](https://www.codacy.com/app/erikni/logni.js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=erikni/logni.js&amp;utm_campaign=Badge_Grade)
 [![Github Releases](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](https://github.com/erikni/logni.js/releases)
 [![Build Status](https://secure.travis-ci.org/erikni/logni.js.png?branch=master)](http://travis-ci.org/erikni/logni.js)
@@ -35,10 +36,11 @@ _Initialization_
 _Log messages_
 ```
 <script type="text/javascript">
-  logni.debug('log debug test'); // debug message with priority 1
-  logni.info('log info test' ,4); // informational message with priority 4
-  logni.warn('log warning test' ,3); // warning message with priority 3
-  logni.error('log error test'); // error message with priority 1
-  logni.critial('log critical test'); // critical message with priority 1
+  logni.debug('log debug test is hidden -> mask for debug not set'); // debug message with priority 1
+  logni.info('log info test is visible', 4); // informational message with priority 4
+  logni.warn('log warning test is visible', 3); // warning message with priority 3
+  logni.error('log error test is visible'); // error message with priority 1
+  logni.critical('log critical test is visible'); // critical message with priority 1
+  logni.info('log info test is hidden -> low mask', 1); 
 </script>
 ```
