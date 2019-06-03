@@ -2,6 +2,7 @@
 .git
 .npmrc
 npm-debug.log
-build/
 node_modules/
+coverage/
+build.sh
 
