@@ -9,7 +9,7 @@
 		logni.file('https://develop-jslib.logni.net');
 
 		logni.env('local');
-		logni.release('0.0.0');
+		logni.release('1.2.3');
 	</script>
 
 </head>
@@ -26,6 +26,10 @@
 		logni.name('xxxlog');
 		logni.critical('log critical test is visible');
 		logni.info('log info test is hidden -> low mask',1);
+
+		logni.emergency('log emergency test is visible');
+		logni.notice('log notice test is hidden -> low mask');
+		logni.alert('log alert test is visible');
 
 		logni.info('... end. is visible', 4);
 	</script>

@@ -413,7 +413,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Debug message
+  	 * Debug-level messages
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -439,7 +439,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Info message
+  	 * Informational messages
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -452,7 +452,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Warning message
+  	 * Warning message: warning conditions
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -465,7 +465,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Error message
+  	 * Error message: error conditions
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -486,7 +486,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Emergency message
+  	 * Emergency message: system is unusable
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -498,7 +498,7 @@ var logni = new function() {
 
 
   	/**
-  	 * Notice message
+  	 * Notice message: normal but significant condition
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
@@ -507,6 +507,19 @@ var logni = new function() {
 	this.notice = function(LOGniMsgMessage) {
 		this.__msg(LOGniMsgMessage, "INFO", 1, true);
 	};
+
+
+  	/**
+  	 * Alert message: action must be taken immediately
+  	 * 
+  	 * @param {string} LOGniMsgMessage,
+  	 * @param {number} LOGniMsgNo,
+  	 * @static
+  	 */
+	this.alert = function(LOGniMsgMessage) {
+		this.__msg(LOGniMsgMessage, "ERROR", 3, true);
+	};
+
 
 	// initialize
 	this.__init__();
