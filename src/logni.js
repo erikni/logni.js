@@ -327,16 +327,40 @@ var logni = new function() {
 
 
   	/**
+  	 * Error stack
+  	 *
+  	 * @param {string} LOGniError,
+  	 * @param {string} LOGniErrorStackNo,
+  	 *
+	 * @return {string} LOGniErrorStacksLast
+  	 * @private
+  	 */
+	this.__errorStack = function(LOGniError, LOGniErrorStackNo) {
+
+		LOGniErrorStacks = LOGniError.stack.toString().split('at');
+		LOGniErrorStackLen = LOGniErrorStacks.length;
+
+		LOGniErrorStacksLasts = LOGniErrorStacks[LOGniErrorStackLen-LOGniErrorStackNo].split('/');
+		LOGniErrorStacksLastLen = LOGniErrorStacksLasts.length;
+
+		LOGniErrorStacksLast = LOGniErrorStacksLasts[0].split('(')[0].trim()+' '+LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
+
+		return LOGniErrorStacksLast;
+	}
+
+
+  	/**
   	 * Log message
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {string} LOGniMsgSeverity,
   	 * @param {number} LOGniMsgNo,
   	 * @param {boolean} LOGniMsgExt,
+  	 * @param {array} LOGniMsgData,
 	 * @return {number} return
   	 * @private
   	 */
-	this.__msg = function(LOGniMsgMessage, LOGniMsgSeverity, LOGniMsgNo, LOGniMsgExt) {
+	this.__msg = function(LOGniMsgMessage, LOGniMsgSeverity, LOGniMsgNo, LOGniMsgExt, LOGniMsgData) {
 		if (LOGniMsgMessage === undefined) LOGniMsgMessage="";
 		if (LOGniMsgSeverity === undefined) LOGniMsgSeverity="DEBUG";
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
@@ -357,6 +381,20 @@ var logni = new function() {
 			return 0;
 		}
 
+
+		// error stack
+		LOGniError = new Error();
+
+		LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
+		LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
+
+		LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1; //.replace(/(\r\n|\n|\r)/gm," ");
+
+		// debug for error stack
+		if (this.debugMode) {
+			Console.log(LOGniError);
+		}
+
 		// stderr(1)
 		if (this.LOGniStderr) {
 
@@ -375,14 +413,23 @@ var logni = new function() {
 			// log messsage with env params
 			if (LOGniMsgExtVisible) {
 				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
-					" {"+this.__LOGniNameStr+", "+this.__LOGniRelStr+", "+this.__LOGniEnvStr+"}", 
+					" {"+LOGniErrorStackExt+", "+this.__LOGniNameStr+", "+
+					this.__LOGniRelStr+", "+this.__LOGniEnvStr+"}", 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
 				);
 			// log message without env params
 			} else {
-				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage, 
+				Console.log("%c"+ __logniTime +" "+ __logniPrefix +": "+LOGniMsgMessage +
+					" {"+LOGniErrorStackExt+"}", 
 					"color: "+this.__LOGniColors[this.__LOGniSeverityColors[LOGniMsgSeverity]] 
 				);
+			}
+
+			// https://developer.mozilla.org/en-US/docs/Web/API/Console/table
+			if (typeof LOGniMsgData !== "undefined") {
+				//Console.log(Array.isArray(LOGniMsgData));
+				Console.table(LOGniMsgData);
+
 			}
 		}
 
@@ -403,11 +450,6 @@ var logni = new function() {
 			}
 		}
 
-		//t = Console.trace().toString();
-		//for(var i=0, len=t.length; i < len; i++) {
-		//	Console.log(t[i]);
-		//}
-
 		return 1;
 	};
 
@@ -415,13 +457,15 @@ var logni = new function() {
   	/**
   	 * Debug-level messages
   	 * 
+	 * Outputs a message to the console with the log level "debug".
+         *
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
-	this.debug = function(LOGniMsgMessage, LOGniMsgNo) {
+	this.debug = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, true);
+		this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, true, LOGniMsgData);
 	};
 
 
@@ -432,65 +476,74 @@ var logni = new function() {
   	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
-	this.critical = function(LOGniMsgMessage, LOGniMsgNo) {
+	this.critical = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, true);
+		this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, true, LOGniMsgData);
 	};
 
 
   	/**
   	 * Informational messages
+         *
+         * Informative logging of information. You may use string substitution 
+         * and additional arguments with this method.
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
-	this.informational = function(LOGniMsgMessage, LOGniMsgNo) {
+	this.info = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, true);
+		this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, true, LOGniMsgData);
 	};
 
 
   	/**
   	 * Warning message: warning conditions
   	 * 
+  	 * Outputs a warning message. You may use string substitution 
+         * and additional arguments with this method.
+  	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
-	this.warning = function(LOGniMsgMessage, LOGniMsgNo) {
+	this.warn = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, true);
+		this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, true, LOGniMsgData);
 	};
 
 
   	/**
   	 * Error message: error conditions
+         *
+         * Outputs an error message. You may use string substitution 
+         * and additional arguments with this method.
   	 * 
   	 * @param {string} LOGniMsgMessage,
   	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
-	this.error = function(LOGniMsgMessage, LOGniMsgNo) {
+	this.error = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
-		this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, true);
+		this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, true, LOGniMsgData);
 	};
 
 
 	// synonym log mesage
-	this.warn = this.warning;
-	this.info = this.informational;
+	this.warning = this.warn;
+	this.informational = this.info;
 	this.fatal = this.critical;
 	this.dbg = this.debug;	
 	this.err = this.error;	
-	this.exception = this.error;	
 
 
   	/**
   	 * Emergency message: system is unusable
   	 * 
+         * Alias for CRITICAL=4
+  	 * 
   	 * @param {string} LOGniMsgMessage,
-  	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
 	this.emergency = function(LOGniMsgMessage) {
@@ -501,8 +554,9 @@ var logni = new function() {
   	/**
   	 * Notice message: normal but significant condition
   	 * 
+	 * Alias for INFO=1
+  	 * 
   	 * @param {string} LOGniMsgMessage,
-  	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
 	this.notice = function(LOGniMsgMessage) {
@@ -513,12 +567,45 @@ var logni = new function() {
   	/**
   	 * Alert message: action must be taken immediately
   	 * 
+	 * Alias for ERROR=3
+  	 * 
   	 * @param {string} LOGniMsgMessage,
-  	 * @param {number} LOGniMsgNo,
   	 * @static
   	 */
 	this.alert = function(LOGniMsgMessage) {
 		this.__msg(LOGniMsgMessage, "ERROR", 3, true);
+	};
+
+
+  	/**
+  	 * Log message
+         *
+         * For general output of logging information. You may use string 
+         * substitution and additional arguments with this method.
+  	 * 
+  	 * Alias for INFO=1
+  	 * 
+  	 * @param {string} LOGniMsgMessage,
+  	 * @static
+  	 */
+	this.log = function(LOGniMsgMessage) {
+		this.__msg(LOGniMsgMessage, "INFO", 1, true);
+	};
+
+
+  	/**
+  	 * Exception message
+         *
+         * This deprecated API should no longer be used, 
+	 * but will probably still work
+  	 * 
+  	 * Alias for ERROR=4
+  	 * 
+  	 * @param {string} LOGniMsgMessage,
+  	 * @static
+  	 */
+	this.exception = function(LOGniMsgMessage) {
+		this.__msg(LOGniMsgMessage, "ERROR", 4, true);
 	};
 
 

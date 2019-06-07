@@ -16,10 +16,22 @@
 <body>
 
 	<script type="text/javascript">
+
+		function Person(firstName, lastName) {
+  			this.firstName = firstName;
+  			this.lastName = lastName;
+		}
+
+		var me = new Person("John", "Smith");
+
+		// logni example
 		logni.info('start ... is visible ', 4);
 
 		logni.debug('log debug test is hidden -> mask for debug not set');
-		logni.info('log info test is visible;', 4);
+		logni.info('log info test without data is visible ', 4 );
+		logni.info('log info test with bad data is visible ', 4 , 'aaa');
+		logni.info('log info test with structure data is visible;', 4, me );
+		logni.info('log info test is visible with array data', 4, ["apples", "oranges", "bananas"] );
 		logni.warn('log warning test is visible', 3);
 		logni.error('log error test is visible');
 
