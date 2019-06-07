@@ -483,6 +483,7 @@ var logni = new function() {
 	this.fatal = this.critical;
 	this.dbg = this.debug;	
 	this.err = this.error;	
+	this.exception = this.error;	
 
 
   	/**
