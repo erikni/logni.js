@@ -343,10 +343,11 @@ var logni = new function() {
 		LOGniErrorStacksLasts = LOGniErrorStacks[LOGniErrorStackLen-LOGniErrorStackNo].split('/');
 		LOGniErrorStacksLastLen = LOGniErrorStacksLasts.length;
 
-		LOGniErrorStacksLast = LOGniErrorStacksLasts[0].split('(')[0].trim()+' '+LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
+		LOGniErrorStacksLast = LOGniErrorStacksLasts[0].split('(')[0].trim()+' '+
+			LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
 
 		return LOGniErrorStacksLast;
-	}
+	};
 
 
   	/**
@@ -388,7 +389,7 @@ var logni = new function() {
 		LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
 		LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
 
-		LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1; //.replace(/(\r\n|\n|\r)/gm," ");
+		LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
 
 		// debug for error stack
 		if (this.debugMode) {
