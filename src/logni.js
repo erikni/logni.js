@@ -34,7 +34,7 @@
  * logni.error("log error test");
  * </pre>
  *
- * @version 0.1.8
+ * @version 0.1.9
  * @author Erik Brozek - https://github.com/erikni
  * @since 2017
  * @static
