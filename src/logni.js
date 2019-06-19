@@ -343,8 +343,17 @@ var logni = new function() {
 		LOGniErrorStacksLasts = LOGniErrorStacks[LOGniErrorStackLen-LOGniErrorStackNo].split('/');
 		LOGniErrorStacksLastLen = LOGniErrorStacksLasts.length;
 
-		LOGniErrorStacksLast = LOGniErrorStacksLasts[0].split('(')[0].trim()+' '+
-			LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
+		if (this.debugMode) {
+			Console.log(LOGniErrorStacksLasts);
+			Console.log(LOGniErrorStacksLastLen);
+		}
+
+		if (LOGniErrorStacksLasts[0].indexOf('(') === -1) {
+			LOGniErrorStacksLast = LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
+		} else {
+			LOGniErrorStacksLast = LOGniErrorStacksLasts[0].split('(')[0].trim()+' '+
+				LOGniErrorStacksLasts[LOGniErrorStacksLastLen-1].split(')')[0].trim();
+		}
 
 		return LOGniErrorStacksLast;
 	};
@@ -384,17 +393,18 @@ var logni = new function() {
 
 
 		// error stack
-		LOGniError = new Error();
+		// LOGniError = new Error();
 
-		LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
-		LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
+		// LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
+		// LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
 
-		LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		// LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		LOGniErrorStackExt = '';
 
 		// debug for error stack
-		if (this.debugMode) {
-			Console.log(LOGniError);
-		}
+		// if (this.debugMode) {
+		// 	Console.log(LOGniError);
+		// }
 
 		// stderr(1)
 		if (this.LOGniStderr) {
@@ -447,7 +457,7 @@ var logni = new function() {
 	
 			// debug url	
 			if (this.debugMode) {
-				Console.log("URL:"+__url);
+				Console.log("DEBUG: URL="+__url);
 			}
 		}
 
