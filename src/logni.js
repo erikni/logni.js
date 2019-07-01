@@ -42,21 +42,33 @@
  */
 
 
+// version
+const version = '0.2.0';
+
+
 // nodejs compatible mode
 const Console = console;
 
+// nodejs 6 compatible for console.debug 
+try {
+	Console.debug(`DEBUG: logni.js version=${version}`);
+}
+catch(err) {
+	Console.debug = (msg) => {
+		Console.log(msg);
+	};
+}
 
+
+// logni
 const logni = new function() {
-
-	// version
-	this.version = '0.2.0';
 
 	// debugMode is disabled
 	this.debugMode 	= false;
 
 	// init
 	this.__init__  = function() {
-		Console.debug(`DEBUG: logni.js version=${this.version}`);
+		Console.debug(`DEBUG: logni.js version=${version}`);
 		Console.debug(`DEBUG: logni.js debugMode=${this.debugMode}`);
 
 		this.__LOGniMaskSeverity = {};
@@ -423,13 +435,13 @@ const logni = new function() {
 
 
 		// error stack
-		LOGniError = new Error();
+		const LOGniError = new Error();
 
-		LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
-		LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
+		const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
+		const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
 
-		LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
-		// LOGniErrorStackExt = '';
+		const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		// const LOGniErrorStackExt = '';
 
 		// debug for error stack
 		if (this.debugMode) {
