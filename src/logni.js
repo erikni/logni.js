@@ -43,7 +43,7 @@
 
 
 // version
-const version = '0.2.0';
+const version = '0.2.0-3';
 
 
 // nodejs compatible mode
@@ -58,6 +58,17 @@ catch(err) {
 		Console.log(`DEBUG: ${msg}`);
 	};
 }
+
+
+// nodejs cookies compatible
+let cookies = `logni=${version}`;
+try {
+	cookies = document.cookie;
+}
+catch(err) {
+	console.log(`[logni.js] cookie err="${err}"`);
+}
+
 
 // logni
 const logni = new function() {
@@ -714,20 +725,21 @@ const logni = new function() {
 		} else {
 			expires = '';
 		}
-		document.cookie = ''; // `${name}=${value}${expires}; path=/`;
+		cookies = `${name}=${value}${expires}; path=/`;
 	};
 
 	// Read cookie
 	this.readCookie = function(name) {
-		let nameEQ = name + "=";
-		let ca = document.cookie.split(';');
+		const cookieNameEQ = name + "=";
+		const cookieDecoded = decodeURIComponent(cookies);
+		const ca = cookieDecoded.split(';');
 		for(let i=0;i < ca.length;i++) {
 			let c = ca[i];
 			while (c.charAt(0) === ' ') {
 				c = c.substring(1,c.length);
 			}
-			if (c.indexOf(nameEQ) === 0) {
-				return c.substring(nameEQ.length,c.length);
+			if (c.indexOf(cookieNameEQ) === 0) {
+				return c.substring(cookieNameEQ.length,c.length);
 			}
 		}
 		return;
