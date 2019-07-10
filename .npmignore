@@ -3,6 +3,7 @@
 .npmrc
 appveyor.yml
 .travis.yml
+.codeclimate.yml
 .jshintrc
 npm-debug.log
 node_modules/

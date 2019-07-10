@@ -7,7 +7,7 @@
 # logni.js
 logni is a javascript library for event logging and application states
 
-__How to install?__
+## How to install?
 - git (github)
 - node package manager
 
@@ -16,6 +16,8 @@ Install from Github
 ```
 $ git clone https://github.com/erikni/logni.js.git
 $ cd logni.js
+$ npm install
+$ npm run build
 ```
 
 Install from Node package manager
@@ -24,16 +26,20 @@ $ npm i logni.js
 ```
 
   
-__Example:__
+## Usage:
 
-_Load script_
+Add the local javascript file to head of HTML page:
 ```
-<script src="src/logni.js" type="text/javascript"></script>
+<head>
+  <script src="build/js/logni.min.js" type="text/javascript"></script>
+</head>
 ```
 
-or from CDN:
+or from Cloudflare CDN:
 ```
-<script src="https://live-jslib.logni.net/js/logni.min.js" type="text/javascript"></script>
+<head>
+  <script src="https://live-jslib.logni.net/js/logni.min.js" type="text/javascript"></script>
+</head>
 ```
 
 
@@ -67,3 +73,14 @@ _Log messages_
   logni.info('log info test is hidden -> low mask', 1); 
 </script>
 ```
+
+## Test
+
+[test/logni.html](https://develop-jslib.logni.net/test/logni.html)
+
+## Contribution
+
+[Pull Requests](https://github.com/erikni/logni.js/pulls) are very welcome.
+
+# Licence
+[GNU General Public License v3.0](LICENSE)
