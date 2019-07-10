@@ -337,7 +337,8 @@ const logni = new function() {
 
 		// mask=ALL
 		if (this.LOGniMask === "ALL") {
-			this.__debug(`severity=${LOGniMsgSeverity0} msgNo=${LOGniMsgNo} >= mask=ALL -> msg log is VISIBLE`);
+			this.__debug(`severity=${LOGniMsgSeverity0} msgNo=${LOGniMsgNo} `
+				+ `>= mask=ALL -> msg log is VISIBLE`);
 			return true;
 		}
 
@@ -731,7 +732,7 @@ const logni = new function() {
 			expires = '';
 		}
 		cookies = `${name}=${value}${expires}; path=/`;
-		this.__debug(`cookieSet ${name}="${ret}"${expires}`);
+		this.__debug(`cookieSet ${name}="${value}"${expires}`);
 	};
 
   	/**
