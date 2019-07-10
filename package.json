@@ -16,16 +16,26 @@
     "url": "https://github.com/erikni/logni.js.git"
   },
   "keywords": [
+    "log",
+    "logging",
     "logger",
+    "lognijs",
+    "logni",
     "js"
   ],
   "author": "Erik Brozek <erik+logni@brozek.name>",
-  "license": "MIT",
+  "license": "GPL3 <LICENSE>",
   "bugs": {
     "url": "https://github.com/erikni/logni.js/issues"
   },
   "homepage": "https://logni.net",
   "dependencies": {
     "babel-minify": "^0.5.0"
-  }
+ },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ]
 }
