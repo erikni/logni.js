@@ -41,7 +41,8 @@ _Initialization_
 ```
 <script type="text/javascript">
   logni.mask('I3E1C1W2'); // Set mask
-  logni.stderr(1); // Set standard error
+  logni.stderr(1); // Set output to console
+  logni.color(1); // Set color console
   logni.file('https://develop-jslog.logni.net'); // Set your file/url for logging
   
   logni.env('local'); // Set enviroment
@@ -50,7 +51,11 @@ _Initialization_
 </script>
  ```
 
- 
+Cookie variables:
+- LOGNI_MASK is alias for javascript function logni.mask()
+- LOGNI_STDERR - logni.stderr()
+- LOGNI_COLOR - logni.color()
+
 _Log messages_
 ```
 <script type="text/javascript">
