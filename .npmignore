@@ -1,8 +1,11 @@
 .*.swp
 .git
 .npmrc
+appveyor.yml
+.travis.yml
+.jshintrc
 npm-debug.log
 node_modules/
 coverage/
 build.sh
-
+debug-develop.sh
