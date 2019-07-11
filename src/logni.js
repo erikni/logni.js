@@ -12,7 +12,7 @@
  */
 
 /**
- * @fileoverview logni is avascript library for event logging 
+ * @fileoverview logni is javascript library for event logging 
  * and application states
  * 
  * <h3>Example:</h3>
@@ -44,7 +44,7 @@
 
 
 // version
-const version = '0.2.0-5';
+const version = '0.2.0-6';
 
 
 // nodejs compatible mode
@@ -73,7 +73,6 @@ catch(err) {
 
 // logni
 const logni = new function() {
-
 	// debugMode is disabled
 	this.debugMode 	= false;
 
@@ -159,53 +158,51 @@ const logni = new function() {
 		this.__debug(`init: logni.mask(${LOGniMask})`);
 		this.LOGniMask = LOGniMask;
 
+		// log mask = ALL
 		let i=0;
 		if (this.LOGniMask === "ALL") {
-			
 			// set default LEVEL=1
 			for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
 				this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 1;
 			}
-	
-		} else {
 
-			// len is wrong
-			const l = this.LOGniMask.length;
-			if (l < 2) {
-				return 0;
-			} else if (l > 10) {
-				return 0;
-			}
-
-			// set default LEVEL=0
-			for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
-				this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 5;
-			}
-
-			// set severity
-			for (i = 0; i < l; i += 2) {
-				let _l = this.LOGniMask.substring(i,i+1);
-				let _no= parseInt(this.LOGniMask.substring(i+1,i+2), 10);
-				this.__debug('mask='
-					+ `${this.LOGniMask} ${i}:${i+1} `
-					+ `severity=${_l} priority=${_no}`
-				);
-
-				if(typeof this.__LOGniMaskSeverity[_l] === "undefined") {
-					this.__debug(`this.__LOGniMaskSeverity[${l}] `
-						+ 'is undefined');
-					return 0;
-				} else {
-					this.__LOGniMaskSeverity[_l] = _no;
-				}
-			}
-			this.__debug('set this.__LOGniMaskSeverity='
-				+ `${this.__LOGniMaskSeverity}`);
-			this.__debug(this.__LOGniMaskSeverity, false);
+			this.info(`[logni.js] init mask=${LOGniMask}`, 1);
+			return 0;
 		}
-		
+
+		// len is wrong
+		const l = this.LOGniMask.length;
+		if (l < 2) {
+			return 1;
+		} else if (l > 10) {
+			return 1;
+		}
+
+		// set default LEVEL=0
+		for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
+			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 5;
+		}
+
+		// set severity
+		for (i = 0; i < l; i += 2) {
+			let _l = this.LOGniMask.substring(i,i+1);
+			let _no= parseInt(this.LOGniMask.substring(i+1,i+2), 10);
+			this.__debug('mask='
+				+ `${this.LOGniMask} ${i}:${i+1} severity=${_l} priority=${_no}`
+			);
+
+			if(typeof this.__LOGniMaskSeverity[_l] === "undefined") {
+				this.__debug(`this.__LOGniMaskSeverity[${l}] is undefined`);
+				return 0;
+			} else {
+				this.__LOGniMaskSeverity[_l] = _no;
+			}
+		}
+		this.__debug(`set this.__LOGniMaskSeverity=${this.__LOGniMaskSeverity}`);
+		this.__debug(this.__LOGniMaskSeverity, false);
 
 		this.info(`[logni.js] init mask=${LOGniMask}`, 1);
+		return 0;
 	};
 
 
@@ -352,17 +349,14 @@ const logni = new function() {
 		const _no = this.__LOGniMaskSeverity[LOGniMsgSeverity0];
 		if (LOGniMsgNo < _no) {
 			this.__debug(`severity=${LOGniMsgSeverity0} `
-				+ `msgNo=${LOGniMsgNo} <  maskNo=${_no} -> msg log is HIDDEN`
-			);
+				+ `msgNo=${LOGniMsgNo} <  maskNo=${_no} -> msg log is HIDDEN`);
 			return false;
 		}
 
 		// message visible
 		this.__debug(`severity=${LOGniMsgSeverity0} `
-			+ `msgNo=${LOGniMsgNo} >= maskNo=${_no} -> msg log is VISIBLE`
-		);
+			+ `msgNo=${LOGniMsgNo} >= maskNo=${_no} -> msg log is VISIBLE`);
 		return true;
-
 	};
 
 
@@ -376,7 +370,6 @@ const logni = new function() {
   	 * @private
   	 */
 	this.__errorStack = function(LOGniError, LOGniErrorStackNo) {
-
 		const LOGniErrorStacks = LOGniError.stack.toString().split('\n');
 		const LOGniErrorStackLen = LOGniErrorStacks.length;
 
@@ -396,6 +389,27 @@ const logni = new function() {
 		}
 
 		return LOGniErrorStacksLast;
+	};
+
+
+  	/**
+  	 * Http(s) request with credentials
+  	 * 
+  	 * @param {string} LOGniUrl,
+  	 * @return {number} ,
+  	 * @static
+  	 */
+	this.__request = function(LOGniUrl) {
+		let __req = new XMLHttpRequest();
+		__req.open("GET", LOGniUrl, true);
+		__req.setRequestHeader("Content-type","application/json; charset=utf-8");
+		__req.withCredentials = true;
+		__req.send(null);
+
+		// debug url	
+		this.__debug(`url=${LOGniUrl}`);
+
+		return 0;
 	};
 
 
@@ -432,17 +446,12 @@ const logni = new function() {
 			return '';
 		}
 
-
 		// error stack
 		const LOGniError = new Error();
-
 		const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
 		const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
-
 		const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
 		// const LOGniErrorStackExt = '';
-
-		// debug for error stack
 		this.__debug(LOGniError);
 
 		// stderr(1)
@@ -477,19 +486,10 @@ const logni = new function() {
 			}
 		}
 
-		// send message to log server
 		if (this.__LOGniFile !== "") {
 			const __url=`${this.__LOGniFile}/log/${__logniPrefix}.json?n=${this.LOGniName}&`
 				+ `t=${__logniTS}&m=${encodeURIComponent(LOGniMsgMessage)}`;
-
-			let __req = new XMLHttpRequest();
-			__req.open("GET", __url, true);
-			__req.setRequestHeader("Content-type","application/json; charset=utf-8");
-			__req.withCredentials = true;
-			__req.send(null);
-	
-			// debug url	
-			this.__debug(`url=${__url}`);
+			this.__request(__url);
 		}
 
 		return LOGniMsgText;
@@ -733,6 +733,8 @@ const logni = new function() {
 		}
 		cookies = `${name}=${value}${expires}; path=/`;
 		this.__debug(`cookieSet ${name}="${value}"${expires}`);
+	
+		return 0;
 	};
 
   	/**
@@ -769,6 +771,8 @@ const logni = new function() {
 	this.cookieDel = function(name) {
 		this.__debug(`cookieDel ${name}`);
 		this.setCookie(name, '', -1);
+
+		return 0;
 	};
 
 
@@ -789,6 +793,8 @@ const logni = new function() {
 				Console.debug(msg);
 			}
 		}
+
+		return 0;
 	};
 
 
