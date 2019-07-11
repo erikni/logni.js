@@ -30,7 +30,7 @@ cache:
 
 install:
   - mkdir -p build/js
-  - sudo apt-get install -y nodejs
+  - sh: sudo apt-get install -y nodejs
   - node --version
   - rm -rf ./node_modules package-lock.json
   - npm install 
