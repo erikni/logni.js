@@ -1,6 +1,6 @@
 {
   "name": "logni.js",
-  "version": "0.1.7",
+  "version": "0.2.1",
   "description": "javascript library for event logging and application states",
   "main": "src/logni.js",
   "directories": {
@@ -16,16 +16,26 @@
     "url": "https://github.com/erikni/logni.js.git"
   },
   "keywords": [
+    "log",
+    "logging",
     "logger",
+    "lognijs",
+    "logni",
     "js"
   ],
   "author": "Erik Brozek <erik+logni@brozek.name>",
-  "license": "MIT",
+  "license": "GPL3 <LICENSE>",
   "bugs": {
     "url": "https://github.com/erikni/logni.js/issues"
   },
   "homepage": "https://logni.net",
   "dependencies": {
     "babel-minify": "^0.5.0"
-  }
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ]
 }

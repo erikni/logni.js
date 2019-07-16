@@ -7,32 +7,61 @@
 # logni.js
 logni is a javascript library for event logging and application states
 
-__How to install?__
+## How to install?
+- git (github)
+- node package manager
+
+
+Install from Github
+```
+$ git clone https://github.com/erikni/logni.js.git
+$ cd logni.js
+$ npm install
+$ npm run build
+```
+
+Install from Node package manager
 ```
 $ npm i logni.js
 ```
-  
-__Example:__
 
-_Load script_
+  
+## Usage:
+
+Add the local javascript file to head of HTML page:
 ```
-<script src="node_modules/logni.js/src/logni.js" type="text/javascript"></script>
+<head>
+  <script src="build/js/logni.min.js" type="text/javascript"></script>
+</head>
 ```
+
+or from Cloudflare CDN:
+```
+<head>
+  <script src="https://live-jslib.logni.net/js/logni.min.js" type="text/javascript"></script>
+</head>
+```
+
 
 _Initialization_
 ```
 <script type="text/javascript">
-  logni.debugMode = false; // Set debug mode
-  logni.mask('ALL'); // Set mask
-  logni.stderr(1); // Set standard error
-  logni.file('https://yourweb/log'); // Set file/url
+  logni.mask('I3E1C1W2'); // Set mask
+  logni.stderr(1); // Set output to console
+  logni.color(1); // Set color console
+  logni.file('https://develop-jslog.logni.net'); // Set your file/url for logging
   
   logni.env('local'); // Set enviroment
-  logni.release('0.0.1'); // Set release version
+  logni.release('1.2.3'); // Set release version
   logni.name('testlog'); // Set application name
 </script>
  ```
- 
+
+Cookie variables:
+- LOGNI_MASK is alias for javascript function logni.mask()
+- LOGNI_STDERR - logni.stderr()
+- LOGNI_COLOR - logni.color()
+
 _Log messages_
 ```
 <script type="text/javascript">
@@ -44,3 +73,14 @@ _Log messages_
   logni.info('log info test is hidden -> low mask', 1); 
 </script>
 ```
+
+## Test
+
+[test/logni.html](https://develop-jslib.logni.net/test/logni.html)
+
+## Contribution
+
+[Pull Requests](https://github.com/erikni/logni.js/pulls) are very welcome.
+
+# Licence
+[GNU General Public License v3.0](LICENSE)

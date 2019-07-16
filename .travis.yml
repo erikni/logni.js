@@ -38,3 +38,9 @@ script:
 
   - echo "istanbul cover src/logni.js ... "
   - istanbul cover src/logni.js
+
+env:
+  - CODECOV_TOKEN="084bed59-2200-41df-ad02-0117dc01416d"
+
+after_success:
+  - codecov
