@@ -27,7 +27,7 @@ install:
   - npm install babel-minify
   - npm install -g jshint
   - npm install -g istanbul
-  - pip install codecov
+  - sudo pip install codecov
 
 # command to run tests
 script: 
