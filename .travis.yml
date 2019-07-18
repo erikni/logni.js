@@ -27,6 +27,7 @@ install:
   - npm install babel-minify
   - npm install -g jshint
   - npm install -g istanbul
+  - pip install codecov
 
 # command to run tests
 script: 
@@ -38,6 +39,9 @@ script:
 
   - echo "istanbul cover src/logni.js ... "
   - istanbul cover src/logni.js
+
+  - echo "codecov ... "
+  - codecov --token=084bed59-2200-41df-ad02-0117dc01416d
 
 env:
   - CODECOV_TOKEN="084bed59-2200-41df-ad02-0117dc01416d"
