@@ -7,11 +7,11 @@
 	<!--script src="https://develop-jslib.logni.net/js/logni.js" type="text/javascript"></script-->
 	<script src="../src/logni.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		logni.debugMode = true;
+		// logni.debugMode = true;
+		logni.color(false);
 		logni.name('testlog');
-		logni.mask('I3E1C1W2');
+		logni.mask('I3E1C1W2D1');
 		logni.stderr(1);
-		logni.color(true);
 		logni.file('https://develop-jslog.logni.net');
 
 		logni.env('local');
@@ -39,7 +39,7 @@
 		logni.color(false)
 		logni.info('log info test without data is visible (no color)', 4 );
 
-		logni.color(true)
+		// logni.color(true)
 		logni.info('log info test with bad data is visible (color)', 3 , 'aaa');
 		logni.info('log info test with structure data is visible;', 4, me );
 		logni.info('log info test is visible with array data', 4, ["apples", "oranges", "bananas"] );
