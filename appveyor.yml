@@ -42,7 +42,7 @@ test_script:
   - node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
 
   - echo "jshint src\logni.js ... "
-  - jshint --verbose --show-non-errors src\logni.js
+  - C:\Users\appveyor\AppData\Roaming\npm\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
 
 notifications:
 
