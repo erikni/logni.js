@@ -42,7 +42,7 @@ install:
 test_script:
   - npm --version
   - C:\projects\logni-js\node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
-  - C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
+#  - C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
   - C:\projects\logni-js\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
 
 notifications:

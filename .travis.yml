@@ -26,6 +26,7 @@ before_install:
 install:
   - npm install --save-dev babel-minify uglify-es uglifyjs-webpack-plugin # minify
   - npm install --save-dev babel-cli babel-preset-env # es5 convert
+  - npm install --save-dev -g npx
   - npm install --save-dev -g jshint # code quality
   - npm install --save-dev -g istanbul
   - sudo pip install codecov
@@ -41,15 +42,15 @@ script:
   - echo "uglifyjs es6 minify src/logni.js ... "
   - ./node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni.js
 
-  - echo "convert es6->es5 build/js/logni.es5.js ... "
-  - npx babel src/logni.js --presets babel-preset-env > build/js/logni.es5.js
+  - echo "convert es6->es5 build/js/lognies5.js ... "
+  - npx babel src/logni.js --presets babel-preset-env > build/js/lognies5.js
 
   - echo "uglifyjs es5 minify src/logni.js ... "
-  - ./node_modules/uglifyjs-webpack-plugin/node_modules/uglify-js/bin/uglifyjs build/js/logni.es5.js
+  - ./node_modules/uglifyjs-webpack-plugin/node_modules/uglify-js/bin/uglifyjs build/js/lognies5.js
 
   - echo "istanbul cover src/logni.js ... "
   - istanbul cover src/logni.js
-  - istanbul cover build/js/logni.es5.js
+  - istanbul cover build/js/lognies5.js
 
   - echo "codecov ... "
   - codecov --token=084bed59-2200-41df-ad02-0117dc01416d
