@@ -29,10 +29,9 @@ cache:
   - node_modules # local npm modules
 
 install:
-  - mkdir -p build/js
-  - sh: sudo apt-get install -y nodejs
-  - node --version
-  - rm -rf ./node_modules package-lock.json
+  - md build\js
+  - npm --version
+  - del /f node_modules package-lock.json
   - npm install 
   - npm install babel-minify
   - npm install -g jshint
@@ -40,14 +39,14 @@ install:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - echo "minify src/logni.js ... "
-  - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
+  - echo "minify src\logni.js ... "
+  - node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
 
-  - echo "jshint src/logni.js ... "
-  - jshint --verbose --show-non-errors src/logni.js
+  - echo "jshint src\logni.js ... "
+  - jshint --verbose --show-non-errors src\logni.js
 
-  - echo "istanbul cover src/logni.js ... "
-  - istanbul cover src/logni.js
+  - echo "istanbul cover src\logni.js ... "
+  - istanbul cover src\logni.js
 
 notifications:
 
