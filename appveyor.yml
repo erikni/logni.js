@@ -27,22 +27,23 @@ platform: Any CPU
 # build cache to preserve files/folders between builds
 cache:
   - node_modules # local npm modules
+  - '%APPDATA%\npm-cache'
 
 install:
   - md build\js
-  - npm --version
   - del /f node_modules package-lock.json
+  - ps: Install-Product node $env:nodejs_version
+  - set PATH=%APPDATA%\npm;%PATH%
   - npm install 
   - npm install babel-minify
-  - npm install -g jshint
+  - npm install jshint
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - echo "minify src\logni.js ... "
-  - node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
-
-  - echo "jshint src\logni.js ... "
-  - C:\Users\appveyor\AppData\Roaming\npm\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
+  - npm --version
+  - C:\projects\logni-js\node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
+  - C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
+  - C:\projects\logni-js\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
 
 notifications:
 
@@ -53,3 +54,6 @@ notifications:
     subject: 'Logni.js: Build {{status}}'     # optional
     message: "{{message}}, {{commitId}}, ..." # optional
     on_build_status_changed: true
+
+# Don't actually build.
+build: off
