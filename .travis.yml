@@ -36,7 +36,7 @@ script:
   - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
 
   - echo "uglifyjs minify src/logni.js ... "
-  - /node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni.js
+  - ./node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni.js
 
   - echo "jshint src/logni.js ... "
   - jshint --verbose --show-non-errors src/logni.js

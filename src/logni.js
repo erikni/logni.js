@@ -44,7 +44,7 @@
 
 
 // version
-const version = '0.2.1-2';
+const version = '0.2.1-3';
 
 
 // nodejs compatible mode
@@ -55,7 +55,7 @@ try {
 	Console.debug(`[logni.js] version=${version}`);
 }
 catch(err) {
-	Console.debug = (msg) => {
+	Console.debug = function(msg) {
 		Console.log(`DEBUG: ${msg}`);
 	};
 }

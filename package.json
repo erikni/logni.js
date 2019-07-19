@@ -30,7 +30,8 @@
   },
   "homepage": "https://logni.net",
   "dependencies": {
-    "babel-minify": "^0.5.0"
+    "babel-minify": "^0.5.0",
+    "uglify-es": "^3.3.9"
   },
   "ignore": [
     "**/.*",
