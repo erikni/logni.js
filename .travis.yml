@@ -36,19 +36,20 @@ script:
   - echo "jshint src/logni.js ... "
   - jshint --verbose --show-non-errors src/logni.js
 
-  - echo "babel minify src/logni.js ... "
-  - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
+  - echo "convert es6->es5 build/js/lognies5.js ... "
+  - npx babel src/logni.js --presets babel-preset-env > build/js/lognies5.js
+
+  - echo "babel minify logni[es5].js ... "
+  - ./node_modules/babel-minify/bin/minify.js src/logni.js         -o build/js/logni.min.js
+  - ./node_modules/babel-minify/bin/minify.js build/js/lognies5.js -o build/js/lognies5.min.js
 
   - echo "uglifyjs es6 minify src/logni.js ... "
   - ./node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni.js
 
-  - echo "convert es6->es5 build/js/lognies5.js ... "
-  - npx babel src/logni.js --presets babel-preset-env > build/js/lognies5.js
-
-  - echo "uglifyjs es5 minify src/logni.js ... "
+  - echo "uglifyjs es5 minify build/js/lognies5.js ... "
   - ./node_modules/uglifyjs-webpack-plugin/node_modules/uglify-js/bin/uglifyjs build/js/lognies5.js
 
-  - echo "istanbul cover src/logni.js ... "
+  - echo "istanbul cover logni[es5].js ... "
   - istanbul cover src/logni.js
   - istanbul cover build/js/lognies5.js
 
