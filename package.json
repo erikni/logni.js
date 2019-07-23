@@ -3,6 +3,7 @@
   "version": "0.2.2",
   "description": "javascript library for event logging and application states",
   "main": "src/logni.js",
+  "module": "build/js/lognies5.js",
   "directories": {
     "test": "test",
     "build": "build"
