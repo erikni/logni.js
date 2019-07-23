@@ -27,7 +27,8 @@ platform: Any CPU
 # build cache to preserve files/folders between builds
 cache:
   - node_modules # local npm modules
-  - '%APPDATA%\npm-cache'
+  - '%APPDATA%\npm-cache' # npm cache
+  - '%USERPROFILE%\.nuget\packages -> **\project.json'  # project.json cache
 
 install:
   - md build\js
@@ -36,14 +37,15 @@ install:
   - set PATH=%APPDATA%\npm;%PATH%
   - npm install 
   - npm install --save-dev babel-minify uglify-es
+  - set PATH=%USERPROFILE%\;%PATH%
   - npm install jshint
 
 # to run your custom scripts instead of automatic tests
 test_script:
   - npm --version
-  - C:\projects\logni-js\node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
-#  - C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
-  - C:\projects\logni-js\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
+  - cmd: C:\projects\logni-js\node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
+  - cmd: C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
+  - cmd: C:\projects\logni-js\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
 
 notifications:
 
@@ -57,3 +59,6 @@ notifications:
 
 # Don't actually build.
 build: off
+
+# Turn off test scripts
+test: off
