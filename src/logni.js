@@ -35,7 +35,7 @@
  * logni.error("log error test");
  * </pre>
  *
- * @version 0.2.2
+ * @version 0.2.3
  * @author Erik Brozek - https://github.com/erikni
  * @since 2017
  * @static
@@ -44,7 +44,7 @@
 
 
 // version
-const version = '0.2.2';
+const version = '0.2.3';
 
 
 // nodejs compatible mode
