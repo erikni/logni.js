@@ -26,7 +26,7 @@ platform: Any CPU
 
 # build cache to preserve files/folders between builds
 cache:
-  - node_modules # local npm modules
+  - node_modules -> package.json # local npm modules
   - '%APPDATA%\npm-cache' # npm cache
 #  - '%USERPROFILE%\.nuget\packages -> **\project.json'  # project.json cache
 
@@ -35,6 +35,7 @@ install:
   - del /f node_modules package-lock.json
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%APPDATA%\npm;%PATH%
+  - del package-lock.json /f
   - npm install 
   - npm install --save-dev babel-minify uglify-es
   - set PATH=%USERPROFILE%\;%PATH%
