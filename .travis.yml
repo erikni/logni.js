@@ -56,8 +56,25 @@ script:
   - echo "codecov ... "
   - codecov --token=084bed59-2200-41df-ad02-0117dc01416d
 
+  - nyc --reporter=lcov npm run test
 env:
   - CODECOV_TOKEN="084bed59-2200-41df-ad02-0117dc01416d"
 
 after_success:
   - codecov
+
+
+
+dist: trusty
+
+addons:
+  chrome: stable
+
+before_script:
+  - npm -g install nyc
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

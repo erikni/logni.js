@@ -8,6 +8,8 @@ package-lock.json
 # test
 coverage/
 debug-develop.sh
+cc-test-reporter
+.nyc_output/
 
 # debian
 debian/logni-libjs.debhelper.log

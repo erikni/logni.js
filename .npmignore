@@ -5,6 +5,8 @@ appveyor.yml
 .travis.yml
 .codeclimate.yml
 .jshintrc
+.nyc_output/
+cc-test-reporter
 npm-debug.log
 node_modules/
 coverage/
