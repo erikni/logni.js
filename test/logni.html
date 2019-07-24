@@ -36,10 +36,12 @@
 		logni.info('start ... is visible ', 4);
 		logni.debug('log debug test is hidden -> mask for debug not set');
 
+		// black-white console
 		logni.color(false)
 		logni.info('log info test without data is visible (no color)', 4 );
 
-		// logni.color(true)
+		// color console
+		logni.color(true)
 		logni.info('log info test with bad data is visible (color)', 3 , 'aaa');
 		logni.info('log info test with structure data is visible;', 4, me );
 		logni.info('log info test is visible with array data', 4, ["apples", "oranges", "bananas"] );
@@ -55,6 +57,11 @@
 		logni.alert('log alert test is visible');
 
 		logni.info('... end. is visible', 4);
+
+		// disable mask
+		logni.mask('OFF')
+		logni.info( 'log info test is hidden -> mask=OFF');
+
 	</script>
 
 </body>
