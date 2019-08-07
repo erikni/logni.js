@@ -44,7 +44,7 @@
 
 
 // version
-const version = '0.2.3-2';
+const version = '0.2.3-3';
 
 
 // nodejs compatible mode
@@ -494,10 +494,11 @@ const logni = new function() {
 			this.__LOGniEnvStr === "env=local") LOGniMsgExtVisible = false;
 
 		// error stack
-		const LOGniError = new Error();
-		const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
-		const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
-		const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		// const LOGniError = new Error();
+		// const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
+		// const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
+		// const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		const LOGniErrorStackExt = '';
 
 		// log messsage with env params
 		if (LOGniMsgExtVisible) {

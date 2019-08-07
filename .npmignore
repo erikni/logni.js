@@ -12,3 +12,5 @@ node_modules/
 coverage/
 build.sh
 debug-develop.sh
+bower_components
+vendor
