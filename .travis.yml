@@ -24,23 +24,57 @@ before_install:
   - npm install 
 
 install:
-  - npm install babel-minify
-  - npm install -g jshint
-  - npm install -g istanbul
+  - npm install --save-dev babel-minify uglify-es uglifyjs-webpack-plugin # minify
+  - npm install --save-dev babel-cli babel-preset-env # es5 convert
+  - npm install --save-dev -g npx
+  - npm install --save-dev -g jshint # code quality
+  - npm install --save-dev -g istanbul
+  - sudo pip install codecov
 
 # command to run tests
 script: 
-  - echo "minify src/logni.js ... "
-  - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
-
   - echo "jshint src/logni.js ... "
   - jshint --verbose --show-non-errors src/logni.js
 
-  - echo "istanbul cover src/logni.js ... "
-  - istanbul cover src/logni.js
+  - echo "convert es6->es5 build/js/lognies5.js ... "
+  - npx babel src/logni.js --presets babel-preset-env > build/js/lognies5.js
 
+  - echo "babel minify logni[es5].js ... "
+  - ./node_modules/babel-minify/bin/minify.js src/logni.js         -o build/js/logni.min.js
+  - ./node_modules/babel-minify/bin/minify.js build/js/lognies5.js -o build/js/lognies5.min.js
+
+  - echo "uglifyjs es6 minify src/logni.js ... "
+  - ./node_modules/uglify-es/bin/uglifyjs --verbose --warn src/logni.js
+
+  - echo "uglifyjs es5 minify build/js/lognies5.js ... "
+  - ./node_modules/uglifyjs-webpack-plugin/node_modules/uglify-js/bin/uglifyjs build/js/lognies5.js
+
+  - echo "istanbul cover logni[es5].js ... "
+  - istanbul cover src/logni.js
+  - istanbul cover build/js/lognies5.js
+
+  - echo "codecov ... "
+  - codecov --token=084bed59-2200-41df-ad02-0117dc01416d
+
+  - nyc --reporter=lcov npm run test
 env:
   - CODECOV_TOKEN="084bed59-2200-41df-ad02-0117dc01416d"
 
 after_success:
   - codecov
+
+
+
+dist: trusty
+
+addons:
+  chrome: stable
+
+before_script:
+  - npm -g install nyc
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

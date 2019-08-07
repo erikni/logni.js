@@ -1,5 +1,8 @@
 version: 2
 
+languages:
+  JavaScript: true
+
 checks: # Configuration of maintainability checks
   similar-code:
     enabled: false
@@ -16,3 +19,8 @@ exclude_patterns: # Exclude files and/or directories from analysis
   - benchmarks/**/*
   - node_modules/**/*
   - coverage/**/*
+  - test/**/*
+
+engines:
+  eslint:
+    enabled: true

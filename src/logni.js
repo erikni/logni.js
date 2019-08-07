@@ -35,7 +35,7 @@
  * logni.error("log error test");
  * </pre>
  *
- * @version 0.2.1
+ * @version 0.2.3
  * @author Erik Brozek - https://github.com/erikni
  * @since 2017
  * @static
@@ -44,7 +44,7 @@
 
 
 // version
-const version = '0.2.1';
+const version = '0.2.3-3';
 
 
 // nodejs compatible mode
@@ -55,7 +55,7 @@ try {
 	Console.debug(`[logni.js] version=${version}`);
 }
 catch(err) {
-	Console.debug = (msg) => {
+	Console.debug = function(msg) {
 		Console.log(`DEBUG: ${msg}`);
 	};
 }
@@ -139,67 +139,94 @@ const logni = new function() {
 
 
   	/**
+  	 * Test cookie if exist
+  	 * 
+  	 * @param {string} cookieName,
+  	 * @param {string} attrName,
+  	 * @param {string} attrValue,
+  	 * 
+	 * @return {string} attrValue
+  	 * @static
+  	 */
+	this.__cookieEnv = function(cookieName, attrName, attrValue) {
+		let cookieValue = this.cookieGet(cookieName);
+		if (cookieValue) {
+			this.__debug(`set ${attrName}=${cookieValue}`);
+			attrValue = cookieValue;
+		}
+		return attrValue;
+	};
+
+
+  	/**
   	 * Set mask
   	 * 
   	 * @param {string} LOGniMask,
+  	 * 
+	 * @return {number} return
   	 * @static
   	 */
 	this.mask = function(LOGniMask) {
 		if (LOGniMask === undefined) LOGniMask="ALL";
 
 		// cookie mask
-		let cookieLOGniMask = this.cookieGet('LOGNI_MASK');
-		if (cookieLOGniMask) {
-			this.__debug(`set LOGniMask=${cookieLOGniMask}`);
-			LOGniMask = cookieLOGniMask;
-		}
+		LOGniMask = this.__cookieEnv('LOGNI_MASK', 'LOGniMask', LOGniMask);
 
 		// debug mask
-		this.__debug(`init: logni.mask(${LOGniMask})`);
+		this.__debug(`init logni.mask(${LOGniMask})`);
 		this.LOGniMask = LOGniMask;
 
-		// log mask = ALL
-		let i=0;
-		if (this.LOGniMask === "ALL") {
-			// set default LEVEL=1
-			for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
-				this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 1;
-			}
-
-			this.info(`[logni.js] init mask=${LOGniMask}`, 1);
-			return 0;
-		}
+		// log mask = ALL | OFF
+		const retMask = this.__setMask(this.LOGniMask);
+		if (retMask == 0) return 0;
 
 		// len is wrong
 		const l = this.LOGniMask.length;
-		if (l < 2) {
-			return 1;
-		} else if (l > 10) {
-			return 1;
-		}
+		if (l < 2 || l > 10) return 1;
 
 		// set default LEVEL=0
-		for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
-			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = 5;
-		}
+		this.__setMask('OFF');
 
 		// set severity
+		let i=0;
 		for (i = 0; i < l; i += 2) {
 			let _l = this.LOGniMask.substring(i,i+1);
-			let _no= parseInt(this.LOGniMask.substring(i+1,i+2), 10);
-			this.__debug('mask='
-				+ `${this.LOGniMask} ${i}:${i+1} severity=${_l} priority=${_no}`
-			);
+			let _no = parseInt(this.LOGniMask.substring(i+1,i+2), 10);
+			this.__debug(`mask=${this.LOGniMask} ${i}:${i+1} severity=${_l} priority=${_no}`);
 
 			if(typeof this.__LOGniMaskSeverity[_l] === "undefined") {
 				this.__debug(`this.__LOGniMaskSeverity[${l}] is undefined`);
 				return 0;
-			} else {
-				this.__LOGniMaskSeverity[_l] = _no;
-			}
+			} 
+			this.__LOGniMaskSeverity[_l] = _no;
 		}
 		this.__debug(`set this.__LOGniMaskSeverity=${this.__LOGniMaskSeverity}`);
 		this.__debug(this.__LOGniMaskSeverity, false);
+
+		this.info(`[logni.js] init mask=${LOGniMask}`, 1);
+		return 0;
+	};
+
+
+  	/**
+  	 * Set mask for ALL | OFF
+  	 * 
+  	 * @param {string} LOGniMask,
+  	 * 
+	 * @return {number} return
+  	 * @private
+  	 */
+	this.__setMask = function(LOGniMask) {
+		let level;
+
+		if (LOGniMask === "ALL") level=1;
+		else if (LOGniMask === "OFF") level=5;
+		else return 1;
+
+		let i=0;
+		for (i = 0; i < this.__logMaskSeverityShort.length; i++) {
+			this.__LOGniMaskSeverity[this.__logMaskSeverityShort[i]] = level;
+		}
 
 		this.info(`[logni.js] init mask=${LOGniMask}`, 1);
 		return 0;
@@ -216,14 +243,10 @@ const logni = new function() {
 		if (LOGniStderr === undefined) LOGniStderr=0;
 
 		// cookie stderr
-		let cookieLOGniStderr = this.cookieGet('LOGNI_STDERR');
-		if (cookieLOGniStderr) {
-			this.__debug(`set LOGniStderr=${cookieLOGniStderr}`);
-			LOGniStderr = cookieLOGniStderr;
-		}
+		LOGniStderr = this.__cookieEnv('LOGNI_STDERR', 'LOGniStderr', LOGniStderr);
 
 		// debug stderr
-		this.__debug(`init: logni.stderr(${LOGniStderr})`);
+		this.__debug(`init logni.stderr(${LOGniStderr})`);
 
 		this.LOGniStderr = LOGniStderr;
 	};
@@ -240,7 +263,7 @@ const logni = new function() {
 		if (LOGniFile === undefined) LOGniFile="";
 
 		// debug file/url
-		this.__debug(`init: logni.file(${LOGniFile})`);
+		this.__debug(`init logni.file(${LOGniFile})`);
 
 		this.__LOGniFile = LOGniFile;
 	};
@@ -256,7 +279,7 @@ const logni = new function() {
 		if (LOGniEnv === undefined) LOGniEnv="live";
 
 		// debug enviroment
-		this.__debug(`init: logni.enviroment(${LOGniEnv})`);
+		this.__debug(`init logni.enviroment(${LOGniEnv})`);
 
 		this.__LOGniEnvStr = "env="+LOGniEnv;
 		this.info(`[logni.js] init enviroment=${LOGniEnv}`, 1);
@@ -274,7 +297,7 @@ const logni = new function() {
 		if (LOGniName === undefined) LOGniName="unknown";
 
 		// debug name
-		this.__debug(`init: logni.name(${LOGniName})`);
+		this.__debug(`init logni.name(${LOGniName})`);
 
 		this.LOGniName = LOGniName;
 		this.__LOGniNameStr = "name="+LOGniName;
@@ -292,7 +315,7 @@ const logni = new function() {
 		if (LOGniRelease === undefined) LOGniRelease="0.0.0";
 
 		// debug release
-		this.__debug(`init: logni.release(${LOGniRelease})`);
+		this.__debug(`init logni.release(${LOGniRelease})`);
 
 		this.LOGniRelease = LOGniRelease;
 		this.__LOGniRelStr = "rel="+LOGniRelease;
@@ -310,14 +333,10 @@ const logni = new function() {
 		if (LOGniColor === undefined) LOGniColor=true;
 
 		// cookie color
-		let cookieLOGniColor = this.cookieGet('LOGNI_COLOR');
-		if (cookieLOGniColor) {
-			this.__debug(`set LOGniColor=${cookieLOGniColor}`);
-			LOGniColor = cookieLOGniColor;
-		}
+		LOGniColor = this.__cookieEnv('LOGNI_COLOR', 'LOGniColor', LOGniColor);
 
 		this.LOGniColor = LOGniColor;
-		this.info(`[logni.js] init color=${LOGniColor}`, 1);
+		this.__debug(`init color=${LOGniColor}`);
 	};
 
 
@@ -339,7 +358,7 @@ const logni = new function() {
 			return true;
 		}
 
-		if(typeof this.__LOGniMaskSeverity[LOGniMsgSeverity0] === "undefined") {
+		if (typeof this.__LOGniMaskSeverity[LOGniMsgSeverity0] === "undefined") {
 			this.__debug(`${this.__LOGniMaskSeverity.LOGniMsgSeverity0} `
 				+ 'is undefined');
 			return false;
@@ -419,77 +438,77 @@ const logni = new function() {
   	 * @param {string} LOGniMsgMessage,
   	 * @param {string} LOGniMsgSeverity,
   	 * @param {number} LOGniMsgNo,
-  	 * @param {bool} LOGniMsgExt,
   	 * @param {array} LOGniMsgData,
-	 * @return {number} return
+	 * @return {string} LOGniMsgText
   	 * @private
   	 */
-	this.__msg = function(LOGniMsgMessage, LOGniMsgSeverity, LOGniMsgNo, LOGniMsgExt, LOGniMsgData) {
+	this.__msg = function(LOGniMsgMessage, LOGniMsgSeverity, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgMessage === undefined) LOGniMsgMessage="";
 		if (LOGniMsgSeverity === undefined) LOGniMsgSeverity="DEBUG";
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
 		// priority
-		if (LOGniMsgNo < 1) {
- 			LOGniMsgNo = 1;
-		} else if (LOGniMsgNo > 4 ) {
-			LOGniMsgNo = 4;
-		}
+		if (LOGniMsgNo < 1) LOGniMsgNo = 1;
+		else if (LOGniMsgNo > 4) LOGniMsgNo = 4;
 
-		const __logniTime = new Date().toISOString();
 		const __logniTS   = Math.round(new Date().getTime()/1000);
 		const __l0 = LOGniMsgSeverity.substring(0, 1);
 		const __logniPrefix = __l0 + LOGniMsgNo;
-		let LOGniMsgText = '';
 
-		if (this.__logUse(__l0, LOGniMsgNo) === false) { 
-			return '';
-		}
-
-		// error stack
-		const LOGniError = new Error();
-		const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
-		const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
-		const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
-		// const LOGniErrorStackExt = '';
-		this.__debug(LOGniError);
+		// log use (true|false)?
+		if (this.__logUse(__l0, LOGniMsgNo) === false) return '';
 
 		// stderr(1)
+		let LOGniMsgText = '';
 		if (this.LOGniStderr) {
-
-			let LOGniMsgExtVisible = false;
-			if (LOGniMsgExt) {
-				LOGniMsgExtVisible = true;
-			}
-
-			// if environment dont set -> no visible
-			if (this.__LOGniRelStr === "rel=0.0.0" && 
-				this.__LOGniNameStr === "name=unknown" &&
-				this.__LOGniEnvStr === "env=local") {
-				LOGniMsgExtVisible = false;
-			}
-
-			// log messsage with env params
-			if (LOGniMsgExtVisible) {
-				LOGniMsgText = `${__logniTime} ${__logniPrefix}: ${LOGniMsgMessage} `
-					+ `{${LOGniErrorStackExt}, ${this.__LOGniNameStr}, `
-					+ `${this.__LOGniRelStr}, ${this.__LOGniEnvStr}}`;
-			// log message without env params
-			} else {
-				LOGniMsgText = `${__logniTime} ${__logniPrefix}: ${LOGniMsgMessage} `
-					+ `{${LOGniErrorStackExt}}`;
-			}
-
-			// https://developer.mozilla.org/en-US/docs/Web/API/Console/table
-			if (typeof LOGniMsgData !== "undefined") {
-				Console.table(LOGniMsgData);
-			}
+			LOGniMsgText = this.__msgStderr(LOGniMsgMessage, __logniPrefix);
+			if (typeof LOGniMsgData !== "undefined") Console.table(LOGniMsgData);
 		}
 
+		// log to server
 		if (this.__LOGniFile !== "") {
 			const __url=`${this.__LOGniFile}/log/${__logniPrefix}.json?n=${this.LOGniName}&`
 				+ `t=${__logniTS}&m=${encodeURIComponent(LOGniMsgMessage)}`;
 			this.__request(__url);
+		}
+
+		return LOGniMsgText;
+	};
+
+
+  	/**
+  	 * Log message for stderr
+  	 * 
+  	 * @param {string} LOGniMsgMessage,
+  	 * @param {string} LOGniPrefix,
+	 * @return {string} LOGniMsgText
+  	 * @private
+  	 */
+	this.__msgStderr = function(LOGniMsgMessage, LOGniPrefix) {
+		const __logniTime = new Date().toISOString();
+		let LOGniMsgExtVisible = true;
+		let LOGniMsgText = '';
+
+		// if environment dont set -> no visible
+		if (this.__LOGniRelStr === "rel=0.0.0" && this.__LOGniNameStr === "name=unknown" &&
+			this.__LOGniEnvStr === "env=local") LOGniMsgExtVisible = false;
+
+		// error stack
+		// const LOGniError = new Error();
+		// const LOGniErrorStackLast2 = this.__errorStack(LOGniError, 2);
+		// const LOGniErrorStackLast1 = this.__errorStack(LOGniError, 1);
+		// const LOGniErrorStackExt = 'stack='+LOGniErrorStackLast2+', '+LOGniErrorStackLast1;
+		const LOGniErrorStackExt = '';
+
+		// log messsage with env params
+		if (LOGniMsgExtVisible) {
+			LOGniMsgText = `${__logniTime} ${LOGniPrefix}: ${LOGniMsgMessage} `
+				+ `{${LOGniErrorStackExt}, ${this.__LOGniNameStr}, `
+				+ `${this.__LOGniRelStr}, ${this.__LOGniEnvStr}}`;
+		// log message without env params
+		} else {
+			LOGniMsgText = `${__logniTime} ${LOGniPrefix}: ${LOGniMsgMessage} `
+				+ `{${LOGniErrorStackExt}}`;
 		}
 
 		return LOGniMsgText;
@@ -508,21 +527,13 @@ const logni = new function() {
 	this.debug = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
-		const LOGniMsgDbgText = this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, true, LOGniMsgData);
-		if (LOGniMsgDbgText === "") {
-			return 0;
-		}
+		const msg = this.__msg(LOGniMsgMessage, "DEBUG", LOGniMsgNo, LOGniMsgData);
+		if (msg === "") return 0;
 
-		// color debug
-		if (this.LOGniColor) {
-			Console.debug(`%c${LOGniMsgDbgText}`,
-				`color: ${this.__LOGniColors[this.__LOGniSeverityColors.DEBUG]}`);
+		let style = `background:white; color:black; font-size:10px;`;
+		if (this.LOGniColor) style = `color: ${this.__LOGniColors[this.__LOGniSeverityColors.DEBUG]}`;
 
-		// black-white debug
-		} else {
-			Console.debug(LOGniMsgDbgText);
-		}
-
+		Console.debug(`%c${msg}`, style);
 		return 1;
 	};
 	this.dbg = this.debug;	
@@ -538,16 +549,15 @@ const logni = new function() {
 	this.critical = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
-		const LOGniMsgCriText = this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, true, LOGniMsgData);
-		if (LOGniMsgCriText === "") {
-			return 0;
-		}
+		const msg = this.__msg(LOGniMsgMessage, "CRITICAL", LOGniMsgNo, LOGniMsgData);
+		if (msg === "") return 0;
 
+		let style = `background:white; color:black; font-weight:bold; font-size:14px;`;
 		if (this.LOGniColor) {
-			Console.error(`%c${LOGniMsgCriText}`, 
-				`color: ${this.__LOGniColors[this.__LOGniSeverityColors.CRITICAL]}`);
+			style = `color:${this.__LOGniColors[this.__LOGniSeverityColors.CRITICAL]}`;
+			Console.error(`%c${msg}`, style);
 		} else {
-			Console.error(LOGniMsgCriText);
+			Console.log(`%c${msg}`, style);
 		}
 		return 1;
 	};
@@ -567,17 +577,13 @@ const logni = new function() {
 	this.info = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
-		const LOGniMsgInfoText = this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, true, LOGniMsgData);
-		if (LOGniMsgInfoText === "") {
-			return 0;
-		}
+		const msg = this.__msg(LOGniMsgMessage, "INFO", LOGniMsgNo, LOGniMsgData);
+		if (msg === "") return 0;
 
-		if (this.LOGniColor) {
-			Console.info(`%c${LOGniMsgInfoText}`, 
-				`color: ${this.__LOGniColors[this.__LOGniSeverityColors.INFO]}`);
-		} else {
-			Console.info(LOGniMsgInfoText);
-		}
+		let style = `background:white; color:black;`;
+		if (this.LOGniColor) style = `color:${this.__LOGniColors[this.__LOGniSeverityColors.INFO]}`;
+
+		Console.info(`%c${msg}`, style);
 		return 1;
 	};
 	this.informational = this.info;
@@ -596,16 +602,15 @@ const logni = new function() {
 	this.warn = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
-		const LOGniMsgWarnText = this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, true, LOGniMsgData);
-		if (LOGniMsgWarnText === "") {
-			return 0;
-		}
+		const msg = this.__msg(LOGniMsgMessage, "WARN", LOGniMsgNo, LOGniMsgData);
+		if (msg === "") return 0;
 
+		let style = `background:white; color:black; font-style:italic;`;
 		if (this.LOGniColor) {
-			Console.warn(`%c${LOGniMsgWarnText}`, 
-				`color: ${this.__LOGniColors[this.__LOGniSeverityColors.WARN]}`);
+			style = `color: ${this.__LOGniColors[this.__LOGniSeverityColors.WARN]}`;
+			Console.warn(`%c${msg}`, style);
 		} else {
-			Console.warn(LOGniMsgWarnText);
+			Console.log(`%c${msg}`, style);
 		}
 		return 1;
 	};
@@ -625,16 +630,15 @@ const logni = new function() {
 	this.error = function(LOGniMsgMessage, LOGniMsgNo, LOGniMsgData) {
 		if (LOGniMsgNo === undefined) LOGniMsgNo=1;
 
-		const LOGniMsgErrText = this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, true, LOGniMsgData);
-		if (LOGniMsgErrText === "") {
-			return 0;
-		}
+		const msg = this.__msg(LOGniMsgMessage, "ERROR", LOGniMsgNo, LOGniMsgData);
+		if (msg === "") return 0;
 
+		let style = `background:white; color:black; font-weight:bold;`;
 		if (this.LOGniColor) {
-			Console.error(`%c${LOGniMsgErrText}`, 
-				`color: ${this.__LOGniColors[this.__LOGniSeverityColors.ERROR]}`);
+			style = `color: ${this.__LOGniColors[this.__LOGniSeverityColors.ERROR]}`;
+			Console.error(`%c${msg}`, style);
 		} else {
-			Console.error(LOGniMsgErrText);
+			Console.log(`%c${msg}`, style);
 		}
 		return 1;
 	};
@@ -788,7 +792,7 @@ const logni = new function() {
 		if (prefix === undefined) prefix=true;
 		if (this.debugMode) {
 			if (prefix) {
-				Console.debug(`[logni.js] ${msg}`);
+				Console.debug(`%c[logni.js] ${msg}`, 'font-style: italic;');
 			} else {
 				Console.debug(msg);
 			}

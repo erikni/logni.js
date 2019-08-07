@@ -5,9 +5,14 @@ build.sh
 node_modules/
 package-lock.json
 
+bower_components
+vendor
+
 # test
 coverage/
 debug-develop.sh
+cc-test-reporter
+.nyc_output/
 
 # debian
 debian/logni-libjs.debhelper.log

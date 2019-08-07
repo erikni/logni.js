@@ -26,28 +26,27 @@ platform: Any CPU
 
 # build cache to preserve files/folders between builds
 cache:
-  - node_modules # local npm modules
+  - node_modules -> package.json # local npm modules
+  - '%APPDATA%\npm-cache' # npm cache
+#  - '%USERPROFILE%\.nuget\packages -> **\project.json'  # project.json cache
 
 install:
-  - mkdir -p build/js
-  - sh: sudo apt-get install -y nodejs
-  - node --version
-  - rm -rf ./node_modules package-lock.json
+  - md build\js
+  - del /f node_modules package-lock.json
+  - ps: Install-Product node $env:nodejs_version
+  - set PATH=%APPDATA%\npm;%PATH%
+  - del package-lock.json /f
   - npm install 
-  - npm install babel-minify
-  - npm install -g jshint
-  - npm install -g istanbul
+  - npm install --save-dev babel-minify uglify-es
+  - set PATH=%USERPROFILE%\;%PATH%
+  - npm install jshint
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - echo "minify src/logni.js ... "
-  - ./node_modules/babel-minify/bin/minify.js src/logni.js -o build/js/logni.min.js
-
-  - echo "jshint src/logni.js ... "
-  - jshint --verbose --show-non-errors src/logni.js
-
-  - echo "istanbul cover src/logni.js ... "
-  - istanbul cover src/logni.js
+  - npm --version
+  - cmd: C:\projects\logni-js\node_modules\babel-minify\bin\minify.js src\logni.js -o build\js\logni.min.js
+  - cmd: C:\projects\logni-js\node_modules\uglify-es\bin\uglifyjs --verbose --warn src\logni.js
+  - cmd: C:\projects\logni-js\node_modules\jshint\bin\jshint --verbose --show-non-errors src\logni.js
 
 notifications:
 
@@ -58,3 +57,9 @@ notifications:
     subject: 'Logni.js: Build {{status}}'     # optional
     message: "{{message}}, {{commitId}}, ..." # optional
     on_build_status_changed: true
+
+# Don't actually build.
+build: off
+
+# Turn off test scripts
+test: off
