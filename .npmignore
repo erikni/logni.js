@@ -10,6 +10,7 @@ cc-test-reporter
 npm-debug.log
 node_modules/
 coverage/
+release.sh
 build.sh
 debug-develop.sh
 bower_components
